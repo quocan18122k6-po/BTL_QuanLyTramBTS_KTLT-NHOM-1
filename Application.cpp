@@ -1,9 +1,10 @@
+
 #include "Application.h"
 #include "InputHelper.h"
 #include <iostream>
 #include <string>
 
-void Application::menu() const {
+void Application::menu() {
     std::cout << "\n======================================================\n";
     std::cout << "      HE THONG QUAN LY TRAM PHAT SONG BTS VIEN THONG   \n";
     std::cout << "======================================================\n";
@@ -36,7 +37,7 @@ void Application::run() {
 
     do {
         try { //Bao boc toan bo luong dieu khien va nhap lieu cua ung dung.
-            hienThiMenuChinh();
+            menu();
             choice = InputHelper::getInt("Nhap lua chon cua ban (0 - 4): ", 0, 4);
 
             switch (choice) {
