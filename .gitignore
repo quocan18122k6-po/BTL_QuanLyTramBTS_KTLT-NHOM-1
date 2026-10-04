@@ -30,3 +30,26 @@
 *.exe
 *.out
 *.app
+*.vsidx
+.vs/BTL_QuanLyTramBTS_KTLT NHOM 1.slnx/v18/.wsuo
+*.db
+*.ipch
+*.json
+*.command
+*.filters
+*.user
+*.lastbuildstate
+*.tlog
+*.ilk
+*.recipe
+*.vcxproj
+*.idb
+*.cpp
+*.slnx
+*.log
+*.pdb
+*.h
+*.h
+include/InputHelper.h
+.vs/slnx.sqlite
+include/InputHelper.h
