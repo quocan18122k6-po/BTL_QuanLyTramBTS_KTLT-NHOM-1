@@ -20,8 +20,8 @@ public:
         return id;
     }
     virtual void setId(const std::string &newId) {
-        if (newId.empty()==1) {
-            throw std::invalid_argument("Lỗi: Mã định danh không được để trống!");
+        if (newId.empty()) {
+            throw std::invalid_argument("Loi: Ma dinh danh khong duoc de trong");
         }
         id = newId;
     }
