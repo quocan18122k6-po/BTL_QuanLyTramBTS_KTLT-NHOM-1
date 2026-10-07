@@ -135,7 +135,7 @@ class Date {
         luongXuat << dt.toString();
         return luongXuat;
     }
-    //
+
     friend std::istream& operator>>(std::istream& luongNhap, Date& dt) {
         std::string chuoiTam;
         if (luongNhap >> chuoiTam) {
