@@ -1,120 +1,156 @@
 #ifndef VALIDATOR_H
 #define VALIDATOR_H
 
-#include <bits/stdc++.h>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include "Date.h"
+
 class Validator {
 public:
-    // 1. Cat bo khoang trang thua (dau cach, tab, xuong dong) o hai dau chuoi
-    static std::string catKhoangTrang(const std::string& chuoiGoc) {
-        size_t viTriDau = chuoiGoc.find_first_not_of(" \t\n\r");
-        if (viTriDau == std::string::npos) {
-            return "";
+    // Cat khoang trang dau va cuoi chuoi
+    static std::string catKhoangTrang(const std::string& s) {
+        int dau = 0;
+        int cuoi = (int)s.length() - 1;
+
+        while (dau < s.length() &&
+              (s[dau] == ' ' || s[dau] == '\t' ||
+               s[dau] == '\n' || s[dau] == '\r')) {
+            dau++;
         }
-        size_t viTriCuoi = chuoiGoc.find_last_not_of(" \t\n\r");
-        return chuoiGoc.substr(viTriDau, viTriCuoi - viTriDau + 1);
-    }
 
-    // 2. Kiem tra chuoi co bi bo trong hoac chi chua toan khoang trang
-    static bool laChuoiRong(const std::string& chuoiKiemTra) {
-        return catKhoangTrang(chuoiKiemTra).empty();
-    }
-
-    // 3. Kiem tra chuoi co chua ky tu phan tach file khong (chong loi hong file .txt)
-    static bool chuaKyTuPhanCach(const std::string& chuoiKiemTra, char kyTuPhanCach = '|') {
-        return chuoiKiemTra.find(kyTuPhanCach) != std::string::npos;
-    }
-
-    // 4. Kiem tra do dai toi da cua chuoi ky tu
-    static bool kiemTraDoDai(const std::string& chuoiKiemTra, size_t doDaiToiDa) {
-        return catKhoangTrang(chuoiKiemTra).length() <= doDaiToiDa;
-    }
-
-    // 5. Kiem tra so nguyen duong (> 0)
-    static bool laSoNguyenDuong(const std::string& chuoiKiemTra) {
-        std::string chuoiXuLy = catKhoangTrang(chuoiKiemTra);
-        if (chuoiXuLy.empty()) {
-            return false;
+        while (cuoi >= dau &&
+              (s[cuoi] == ' ' || s[cuoi] == '\t' ||
+               s[cuoi] == '\n' || s[cuoi] == '\r')) {
+            cuoi--;
         }
-        for (char kiTu : chuoiXuLy) {
-            if (!std::isdigit(static_cast<unsigned char>(kiTu))) {
+
+        if (dau > cuoi) return "";
+
+        return s.substr(dau, cuoi - dau + 1);
+    }
+
+    // Kiem tra chuoi rong
+    static bool laChuoiRong(const std::string& s) {
+        return catKhoangTrang(s).empty();
+    }
+
+    // Kiem tra chuoi co chua ky tu phan cach hay khong
+    static bool chuaKyTuPhanCach(const std::string& s, char kyTu = '|') {
+        return s.find(kyTu) != std::string::npos;
+    }
+
+    // Kiem tra do dai toi da
+    static bool kiemTraDoDai(const std::string& s, size_t maxLen) {
+        std::string str = catKhoangTrang(s);
+        return str.length() <= maxLen;
+    }
+
+    // Kiem tra so nguyen duong
+    static bool laSoNguyenDuong(const std::string& s) {
+        std::string str = catKhoangTrang(s);
+
+        if (str.empty()) return false;
+
+        for (int i = 0; i < str.length(); i++) {
+            if (str[i] < '0' || str[i] > '9') {
                 return false;
             }
         }
+
         try {
-            long long giaTri = std::stoll(chuoiXuLy);
-            return giaTri > 0;
-        } catch (...) {
+            long long so = std::stoll(str);
+            return so > 0;
+        }
+        catch (...) {
             return false;
         }
     }
 
-    // 6. Kiem tra so thuc khong am (double >= 0.0)
-    static bool laSoThucKhongAm(const std::string& chuoiKiemTra) {
-        std::string chuoiXuLy = catKhoangTrang(chuoiKiemTra);
-        if (chuoiXuLy.empty()) {
-            return false;
-        }
-        std::stringstream ss(chuoiXuLy);
-        double giaTri;
-        char kiTuDu;
-        if ((ss >> giaTri) && !(ss >> kiTuDu)) {
-            return giaTri >= 0.0;
-        }
-        return false;
+    // Kiem tra so thuc khong am
+    static bool laSoThucKhongAm(const std::string& s) {
+        std::string str = catKhoangTrang(s);
+
+        if (str.empty()) return false;
+
+        std::stringstream ss(str);
+        double so;
+        char kyTu;
+
+        if (!(ss >> so)) return false;
+
+        if (ss >> kyTu) return false;
+
+        return std::isfinite(so) && so >= 0;
     }
 
-    // 7. Kiem tra ma dinh danh / khoa ngoai hop le (khong rong, khong co dau cach, khong chua '|')
-    static bool kiemTraMaHopLe(const std::string& maDinhDanh) {
-        std::string chuoiXuLy = catKhoangTrang(maDinhDanh);
-        if (chuoiXuLy.empty() || chuaKyTuPhanCach(chuoiXuLy)) {
-            return false;
-        }
-        for (char kiTu : chuoiXuLy) {
-            if (std::isspace(static_cast<unsigned char>(kiTu))) {
+    // Kiem tra ma ID
+    static bool kiemTraMaHopLe(const std::string& ma) {
+        std::string str = catKhoangTrang(ma);
+
+        if (str.empty()) return false;
+
+        if (chuaKyTuPhanCach(str)) return false;
+
+        for (int i = 0; i < str.length(); i++) {
+            if (str[i] == ' ' || str[i] == '\t' ||
+                str[i] == '\n' || str[i] == '\r') {
                 return false;
             }
         }
+
         return true;
     }
 
-    // 8. Kiem tra so Serial cua thiet bi (chi chua chu cai, chu so, dau '-' hoac '_')
-    static bool kiemTraSoSerial(const std::string& soSerial) {
-        std::string chuoiXuLy = catKhoangTrang(soSerial);
-        if (chuoiXuLy.empty() || chuaKyTuPhanCach(chuoiXuLy)) {
-            return false;
-        }
-        for (char kiTu : chuoiXuLy) {
-            if (!std::isalnum(static_cast<unsigned char>(kiTu)) && kiTu != '-' && kiTu != '_') {
+    // Kiem tra serial chi gom chu, so, dau gach ngang va gach duoi
+    static bool kiemTraSoSerial(const std::string& serial) {
+        std::string str = catKhoangTrang(serial);
+
+        if (str.empty()) return false;
+
+        if (chuaKyTuPhanCach(str)) return false;
+
+        for (int i = 0; i < str.length(); i++) {
+            char c = str[i];
+
+            if (!((c >= '0' && c <= '9') ||
+                  (c >= 'a' && c <= 'z') ||
+                  (c >= 'A' && c <= 'Z') ||
+                  c == '-' || c == '_')) {
                 return false;
             }
         }
+
         return true;
     }
 
-    // 9. Kiem tra so dien thoai di dong (dung cho Technician: 10 chu so, bat dau bang so '0')
-    static bool kiemTraSoDienThoai(const std::string& soDienThoai) {
-        std::string chuoiXuLy = catKhoangTrang(soDienThoai);
-        if (chuoiXuLy.length() != 10 || chuoiXuLy[0] != '0') {
-            return false;
-        }
-        for (char kiTu : chuoiXuLy) {
-            if (!std::isdigit(static_cast<unsigned char>(kiTu))) {
+    // Kiem tra so dien thoai gom 10 so va bat dau bang 0
+    static bool kiemTraSoDienThoai(const std::string& sdt) {
+        std::string str = catKhoangTrang(sdt);
+
+        if (str.length() != 10) return false;
+
+        if (str[0] != '0') return false;
+
+        for (int i = 0; i < str.length(); i++) {
+            if (str[i] < '0' || str[i] > '9') {
                 return false;
             }
         }
+
         return true;
     }
 
-    // 10. Kiem tra goc phat hop le (dung cho gocNgangTilt: 0-90, huongPhatAzimuth: 0-360)
-    static bool kiemTraGocHopLe(double giaTriGoc, double gocNhoNhat, double gocLonNhat) {
-        return (giaTriGoc >= gocNhoNhat && giaTriGoc <= gocLonNhat);
+    // Kiem tra goc co nam trong khoang cho phep hay khong
+    static bool kiemTraGocHopLe(double goc, double gocMin, double gocMax) {
+        return goc >= gocMin && goc <= gocMax;
     }
 
-    // 11. Kiem tra chuoi ngay thang dd/MM/yyyy (tich hop truc tiep qua ham napTuChuoi cua Date)
-    static bool kiemTraNgayHopLe(const std::string& chuoiNgay) {
-        Date doiTuongNgay;
-        return doiTuongNgay.napTuChuoi(catKhoangTrang(chuoiNgay));
+    // Kiem tra ngay hop le bang lop Date
+    static bool kiemTraNgayHopLe(const std::string& strNgay) {
+        Date dt;
+        return dt.napTuChuoi(catKhoangTrang(strNgay));
     }
 };
 
-#endif // VALIDATOR_H
+#endif
