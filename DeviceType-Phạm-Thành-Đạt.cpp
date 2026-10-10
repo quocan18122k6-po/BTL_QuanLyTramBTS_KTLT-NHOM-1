@@ -1,59 +1,107 @@
-
 #include "DeviceType.h"
 #include "Validator.h"
-#include <bits/stdc++.h>
 
+#include <iostream>
+#include <iomanip>
+#include <sstream>
+#include <stdexcept>
+#include <vector>
 
-// CAI DAT LOP DEVICETYPE
+// ================= LOP DEVICETYPE =================
 
-DeviceType::DeviceType() : Entity(""), tenLoai(""), chucNang(""), nhaSanXuat("") {}
-
-DeviceType::DeviceType(const std::string& maLoai, const std::string& tenLoai, 
-                       const std::string& chucNang, const std::string& nhaSanXuat)
-    : Entity(maLoai), tenLoai(""), chucNang(""), nhaSanXuat("") {
-    setTenLoai(tenLoai);
-    setChucNang(chucNang);
-    setNhaSanXuat(nhaSanXuat);
+// Constructor mac dinh
+DeviceType::DeviceType()
+    : Entity(""), tenLoai(""), chucNang(""), nhaSanXuat("") {
 }
 
-std::string DeviceType::getTenLoai() const { return tenLoai; }
-std::string DeviceType::getChucNang() const { return chucNang; }
-std::string DeviceType::getNhaSanXuat() const { return nhaSanXuat; }
+// Constructor co tham so
+DeviceType::DeviceType(const std::string& maLoai,
+                       const std::string& tenLoai,
+                       const std::string& chucNang,
+                       const std::string& nhaSanXuat)
+    : Entity(""), tenLoai(""), chucNang(""), nhaSanXuat("") {
 
-bool DeviceType::setTenLoai(const std::string& tenMoi) { 
+    std::string ma = Validator::catKhoangTrang(maLoai);
+
+    if (!Validator::kiemTraMaHopLe(ma)) {
+        throw std::invalid_argument("Ma loai khong hop le");
+    }
+
+    setId(ma);
+
+    if (!setTenLoai(tenLoai)) {
+        throw std::invalid_argument("Ten loai khong hop le");
+    }
+
+    if (!setChucNang(chucNang)) {
+        throw std::invalid_argument("Chuc nang khong hop le");
+    }
+
+    if (!setNhaSanXuat(nhaSanXuat)) {
+        throw std::invalid_argument("Nha san xuat khong hop le");
+    }
+}
+
+// Getter
+std::string DeviceType::getTenLoai() const {
+    return tenLoai;
+}
+
+std::string DeviceType::getChucNang() const {
+    return chucNang;
+}
+
+std::string DeviceType::getNhaSanXuat() const {
+    return nhaSanXuat;
+}
+
+// Setter
+bool DeviceType::setTenLoai(const std::string& tenMoi) {
     std::string s = Validator::catKhoangTrang(tenMoi);
-    if (Validator::laChuoiRong(s) || Validator::chuaKyTuPhanCach(s)) {
+
+    if (Validator::laChuoiRong(s) ||
+        Validator::chuaKyTuPhanCach(s)) {
         return false;
     }
-    this->tenLoai = s;
+
+    tenLoai = s;
     return true;
 }
 
-bool DeviceType::setChucNang(const std::string& chucNangMoi) { 
+bool DeviceType::setChucNang(const std::string& chucNangMoi) {
     std::string s = Validator::catKhoangTrang(chucNangMoi);
-    if (Validator::laChuoiRong(s) || Validator::chuaKyTuPhanCach(s)) {
+
+    if (Validator::laChuoiRong(s) ||
+        Validator::chuaKyTuPhanCach(s)) {
         return false;
     }
-    this->chucNang = s;
+
+    chucNang = s;
     return true;
 }
 
-bool DeviceType::setNhaSanXuat(const std::string& nsxMoi) { 
+bool DeviceType::setNhaSanXuat(const std::string& nsxMoi) {
     std::string s = Validator::catKhoangTrang(nsxMoi);
-    if (Validator::laChuoiRong(s) || Validator::chuaKyTuPhanCach(s)) {
+
+    if (Validator::laChuoiRong(s) ||
+        Validator::chuaKyTuPhanCach(s)) {
         return false;
     }
-    this->nhaSanXuat = s;
+
+    nhaSanXuat = s;
     return true;
 }
 
+// In duong ke bang
 void DeviceType::inDuongKeBang() {
-    std::cout << "+" << std::string(12, '-') 
-              << "+" << std::string(25, '-') 
-              << "+" << std::string(32, '-') 
-              << "+" << std::string(22, '-') << "+\n";
+    std::cout << "+"
+              << std::string(12, '-') << "+"
+              << std::string(25, '-') << "+"
+              << std::string(32, '-') << "+"
+              << std::string(22, '-') << "+\n";
 }
 
+// In tieu de bang
 void DeviceType::inTieuDeBang() {
     std::cout << "\n";
     inDuongKeBang();
@@ -64,49 +112,62 @@ void DeviceType::inTieuDeBang() {
     inDuongKeBang();
 }
 
-// 1. Nhap moi thong tin tu ban phim
+// Nhap thong tin loai thiet bi
 void DeviceType::input() {
-    std::string buffer;
+    std::string s;
+
     while (true) {
         std::cout << "Nhap ten loai thiet bi (VD: BBU, RRU): ";
-        std::getline(std::cin, buffer);
-        if (!setTenLoai(buffer)) {
-            std::cout << "!! Ten loai khong duoc de trong va khong chua ky tu '|'!\n";
-            continue;
+
+        if (!std::getline(std::cin, s)) {
+            throw std::runtime_error("Khong doc duoc du lieu tu ban phim");
         }
-        break;
+
+        if (setTenLoai(s)) {
+            break;
+        }
+
+        std::cout << "Ten loai khong hop le. Hay nhap lai.\n";
     }
 
     while (true) {
         std::cout << "Nhap chuc nang chinh: ";
-        std::getline(std::cin, buffer);
-        if (!setChucNang(buffer)) {
-            std::cout << "!! Chuc nang khong duoc de trong va khong chua ky tu '|'!\n";
-            continue;
+
+        if (!std::getline(std::cin, s)) {
+            throw std::runtime_error("Khong doc duoc du lieu tu ban phim");
         }
-        break;
+
+        if (setChucNang(s)) {
+            break;
+        }
+
+        std::cout << "Chuc nang khong hop le. Hay nhap lai.\n";
     }
 
     while (true) {
         std::cout << "Nhap nha san xuat: ";
-        std::getline(std::cin, buffer);
-        if (!setNhaSanXuat(buffer)) {
-            std::cout << "!! Nha san xuat khong duoc de trong va khong chua ky tu '|'!\n";
-            continue;
+
+        if (!std::getline(std::cin, s)) {
+            throw std::runtime_error("Khong doc duoc du lieu tu ban phim");
         }
-        break;
+
+        if (setNhaSanXuat(s)) {
+            break;
+        }
+
+        std::cout << "Nha san xuat khong hop le. Hay nhap lai.\n";
     }
 }
 
-// 2. Hien thi chi tiet (dang the/card view)
+// Hien thi thong tin chi tiet
 void DeviceType::display() const {
-    std::cout << "  - Ma loai thiet bi : " << id << "\n"
-              << "  - Ten loai         : " << tenLoai << "\n"
-              << "  - Chuc nang chinh  : " << chucNang << "\n"
-              << "  - Nha san xuat     : " << nhaSanXuat << "\n";
+    std::cout << "  - Ma loai thiet bi : " << id << "\n";
+    std::cout << "  - Ten loai         : " << tenLoai << "\n";
+    std::cout << "  - Chuc nang chinh  : " << chucNang << "\n";
+    std::cout << "  - Nha san xuat     : " << nhaSanXuat << "\n";
 }
 
-// 3. Hien thi mot dong trong bang danh sach
+// Hien thi mot dong trong bang
 void DeviceType::displayRow() const {
     std::cout << "| " << std::left << std::setw(10) << id << " "
               << "| " << std::setw(23) << tenLoai << " "
@@ -114,219 +175,361 @@ void DeviceType::displayRow() const {
               << "| " << std::setw(20) << nhaSanXuat << " |\n";
 }
 
-// 4. Xuat chuoi luu file text: id|tenLoai|chucNang|nhaSanXuat
+// Chuyen thong tin thanh chuoi de luu file
+// Dinh dang: maLoai|tenLoai|chucNang|nhaSanXuat
 std::string DeviceType::toString() const {
     return id + "|" + tenLoai + "|" + chucNang + "|" + nhaSanXuat;
 }
 
-// 5. Nap du lieu tu 1 dong doc tu file text
+// Doc thong tin tu file
 void DeviceType::fromString(const std::string& line) {
     std::stringstream ss(line);
-    std::string maDoc, tenDoc, cnDoc, nsxDoc;
 
-    if (std::getline(ss, maDoc, '|') &&
-        std::getline(ss, tenDoc, '|') &&
-        std::getline(ss, cnDoc, '|') &&
-        std::getline(ss, nsxDoc)) {
-        this->id = Validator::catKhoangTrang(maDoc);
-        this->tenLoai = Validator::catKhoangTrang(tenDoc);
-        this->chucNang = Validator::catKhoangTrang(cnDoc);
-        this->nhaSanXuat = Validator::catKhoangTrang(nsxDoc);
+    std::string ma;
+    std::string ten;
+    std::string cn;
+    std::string nsx;
+
+    if (!std::getline(ss, ma, '|') ||
+        !std::getline(ss, ten, '|') ||
+        !std::getline(ss, cn, '|') ||
+        !std::getline(ss, nsx)) {
+        throw std::invalid_argument("Dong du lieu khong dung dinh dang");
     }
+
+    // Kiem tra co thua truong du lieu khong
+    if (nsx.find('|') != std::string::npos) {
+        throw std::invalid_argument("Dong du lieu co thua truong");
+    }
+
+    ma = Validator::catKhoangTrang(ma);
+    ten = Validator::catKhoangTrang(ten);
+    cn = Validator::catKhoangTrang(cn);
+    nsx = Validator::catKhoangTrang(nsx);
+
+    if (!Validator::kiemTraMaHopLe(ma)) {
+        throw std::invalid_argument("Ma loai khong hop le");
+    }
+
+    if (Validator::laChuoiRong(ten) ||
+        Validator::chuaKyTuPhanCach(ten)) {
+        throw std::invalid_argument("Ten loai khong hop le");
+    }
+
+    if (Validator::laChuoiRong(cn) ||
+        Validator::chuaKyTuPhanCach(cn)) {
+        throw std::invalid_argument("Chuc nang khong hop le");
+    }
+
+    if (Validator::laChuoiRong(nsx) ||
+        Validator::chuaKyTuPhanCach(nsx)) {
+        throw std::invalid_argument("Nha san xuat khong hop le");
+    }
+
+    // Chi gan du lieu sau khi kiem tra hop le
+    id = ma;
+    tenLoai = ten;
+    chucNang = cn;
+    nhaSanXuat = nsx;
 }
 
-// 6. Cap nhat thong tin tuong tac (Enter giu nguyen)
+// Cap nhat thong tin
+// Nhan Enter thi giu nguyen gia tri cu
 void DeviceType::updateInfo() {
-    std::cout << "\n(Nhan Enter neu muon giu nguyen gia tri cu)\n";
-    std::string input;
+    std::string s;
 
-    // Cap nhat Ten loai
+    std::cout << "\nNhan Enter neu muon giu nguyen gia tri cu.\n";
+
+    // Cap nhat ten loai
     while (true) {
-        std::cout << "Ten loai moi (" << this->tenLoai << "): ";
-        std::getline(std::cin, input);
-        input = Validator::catKhoangTrang(input);
-        if (input.empty()) break;
-        if (!setTenLoai(input)) {
-            std::cout << "!! Ten loai khong duoc chua ky tu '|'!\n";
-            continue;
+        std::cout << "Ten loai moi (" << tenLoai << "): ";
+
+        if (!std::getline(std::cin, s)) {
+            throw std::runtime_error("Khong doc duoc du lieu tu ban phim");
         }
-        break;
+
+        s = Validator::catKhoangTrang(s);
+
+        if (s.empty()) {
+            break;
+        }
+
+        if (setTenLoai(s)) {
+            break;
+        }
+
+        std::cout << "Ten loai khong hop le. Hay nhap lai.\n";
     }
 
-    // Cap nhat Chuc nang
+    // Cap nhat chuc nang
     while (true) {
-        std::cout << "Chuc nang moi (" << this->chucNang << "): ";
-        std::getline(std::cin, input);
-        input = Validator::catKhoangTrang(input);
-        if (input.empty()) break;
-        if (!setChucNang(input)) {
-            std::cout << "!! Chuc nang khong duoc chua ky tu '|'!\n";
-            continue;
+        std::cout << "Chuc nang moi (" << chucNang << "): ";
+
+        if (!std::getline(std::cin, s)) {
+            throw std::runtime_error("Khong doc duoc du lieu tu ban phim");
         }
-        break;
+
+        s = Validator::catKhoangTrang(s);
+
+        if (s.empty()) {
+            break;
+        }
+
+        if (setChucNang(s)) {
+            break;
+        }
+
+        std::cout << "Chuc nang khong hop le. Hay nhap lai.\n";
     }
 
-    // Cap nhat Nha san xuat
+    // Cap nhat nha san xuat
     while (true) {
-        std::cout << "Nha san xuat moi (" << this->nhaSanXuat << "): ";
-        std::getline(std::cin, input);
-        input = Validator::catKhoangTrang(input);
-        if (input.empty()) break;
-        if (!setNhaSanXuat(input)) {
-            std::cout << "!! Nha san xuat khong duoc chua ky tu '|'!\n";
-            continue;
+        std::cout << "Nha san xuat moi (" << nhaSanXuat << "): ";
+
+        if (!std::getline(std::cin, s)) {
+            throw std::runtime_error("Khong doc duoc du lieu tu ban phim");
         }
-        break;
+
+        s = Validator::catKhoangTrang(s);
+
+        if (s.empty()) {
+            break;
+        }
+
+        if (setNhaSanXuat(s)) {
+            break;
+        }
+
+        std::cout << "Nha san xuat khong hop le. Hay nhap lai.\n";
     }
 }
 
-// ================= CAI DAT LOP DEVICETYPEMANAGER =================
+// ================= LOP DEVICETYPEMANAGER =================
 
-DeviceTypeManager::DeviceTypeManager() : repo("data/device_types.txt") {}
+// Constructor
+DeviceTypeManager::DeviceTypeManager()
+    : repo("data/device_types.txt") {
+}
 
+// Hien thi menu
 void DeviceTypeManager::hienThiMenu() const {
-    std::cout << "\n============= QUAN LY LOAI THIET BI =============\n";
-    std::cout << "1. Them loai thiet bi moi (Create)\n";
-    std::cout << "2. Xem danh sach loai thiet bi (Read)\n";
-    std::cout << "3. Tim kiem loai thiet bi (Search)\n";
-    std::cout << "4. Cap nhat thong tin loai thiet bi (Update)\n";
-    std::cout << "5. Xoa loai thiet bi (Delete)\n";
-    std::cout << "0. Quay lai menu chinh\n";
-    std::cout << "=================================================\n";
+    std::cout << "\n===== QUAN LY LOAI THIET BI =====\n";
+    std::cout << "1. Them loai thiet bi\n";
+    std::cout << "2. Xem danh sach\n";
+    std::cout << "3. Tim kiem\n";
+    std::cout << "4. Cap nhat\n";
+    std::cout << "5. Xoa\n";
+    std::cout << "0. Quay lai\n";
+    std::cout << "=================================\n";
 }
 
+// Chay chuong trinh
 void DeviceTypeManager::chayChuongTrinh() {
-    int luaChon;
-    do {
+    while (true) {
         hienThiMenu();
-        std::cout << ">> Nhap lua chon: ";
-        std::string input;
-        std::getline(std::cin, input);
 
-        if (!Validator::laSoNguyenDuong(input) && input != "0") {
-            std::cout << "!! Lua chon phai la so nguyen hop le!\n";
-            continue;
+        std::string luaChon;
+
+        std::cout << "Nhap lua chon: ";
+
+        if (!std::getline(std::cin, luaChon)) {
+            break;
         }
-        luaChon = std::stoi(input);
+
+        luaChon = Validator::catKhoangTrang(luaChon);
+
+        if (luaChon == "0") {
+            break;
+        }
 
         try {
-            switch (luaChon) {
-                case 1: themMoi(); break;
-                case 2: xemDanhSach(); break;
-                case 3: timKiem(); break;
-                case 4: capNhat(); break;
-                case 5: xoa(); break;
-                case 0: break;
-                default: std::cout << "!! Chuc nang khong ton tai!\n"; break;
+            if (luaChon == "1") {
+                themMoi();
             }
-        } catch (const std::exception& e) {
-            std::cout << "!! Da xay ra loi: " << e.what() << "\n";
+            else if (luaChon == "2") {
+                xemDanhSach();
+            }
+            else if (luaChon == "3") {
+                timKiem();
+            }
+            else if (luaChon == "4") {
+                capNhat();
+            }
+            else if (luaChon == "5") {
+                xoa();
+            }
+            else {
+                std::cout << "Lua chon khong hop le. Hay nhap tu 0 den 5.\n";
+            }
         }
-    } while (luaChon != 0);
+        catch (const std::exception& e) {
+            std::cout << "Da xay ra loi: " << e.what() << "\n";
+        }
+    }
 }
 
+// Them loai thiet bi
 void DeviceTypeManager::themMoi() {
-    std::cout << "\n--- THEM LOAI THIET BI MOI ---\n";
+    std::cout << "\n--- THEM LOAI THIET BI ---\n";
+
     std::string maNhap;
+
     while (true) {
         std::cout << "Nhap ma loai (VD: LT01): ";
-        std::getline(std::cin, maNhap);
+
+        if (!std::getline(std::cin, maNhap)) {
+            return;
+        }
+
         maNhap = Validator::catKhoangTrang(maNhap);
+
         if (!Validator::kiemTraMaHopLe(maNhap)) {
-            std::cout << "!! Ma khong hop le (khong rong, khong chua khoang trang/ky tu '|').\n";
+            std::cout << "Ma loai khong hop le. Hay nhap lai.\n";
             continue;
         }
-        if (repo.timKiemTheoMa(maNhap) != nullptr) {
-            std::cout << "!! Ma loai da ton tai trong he thong!\n";
+
+        if (repo.find(maNhap) != nullptr) {
+            std::cout << "Ma loai da ton tai. Hay nhap ma khac.\n";
             continue;
         }
+
         break;
     }
 
     DeviceType dt;
     dt.setId(maNhap);
     dt.input();
-    repo.them(dt);
-    std::cout << ">> Them loai thiet bi thanh cong va da luu file!\n";
+
+    if (repo.add(dt)) {
+        std::cout << "Them loai thiet bi thanh cong!\n";
+    }
+    else {
+        std::cout << "Them that bai. Khong the luu file.\n";
+    }
 }
 
+// Xem danh sach loai thiet bi
 void DeviceTypeManager::xemDanhSach() {
     std::cout << "\n--- DANH SACH LOAI THIET BI ---\n";
-    std::vector<DeviceType> danhSach = repo.layTatCa();
+
+    const std::vector<DeviceType>& danhSach = repo.getAll();
+
     if (danhSach.empty()) {
-        std::cout << ">> Hien chua co du lieu nao.\n";
+        std::cout << "Hien chua co du lieu.\n";
         return;
     }
+
     DeviceType::inTieuDeBang();
-    for (const auto& dt : danhSach) {
-        dt.displayRow(); // In tung dong trong bang danh sach
+
+    for (const DeviceType& dt : danhSach) {
+        dt.displayRow();
     }
+
     DeviceType::inDuongKeBang();
-    std::cout << ">> Tong cong: " << danhSach.size() << " ban ghi.\n";
+
+    std::cout << "Tong cong: " << danhSach.size() << " ban ghi.\n";
 }
 
+// Tim kiem loai thiet bi theo ma
 void DeviceTypeManager::timKiem() {
     std::cout << "\n--- TIM KIEM LOAI THIET BI ---\n";
     std::cout << "Nhap ma loai can tim: ";
+
     std::string maTim;
-    std::getline(std::cin, maTim);
+
+    if (!std::getline(std::cin, maTim)) {
+        return;
+    }
+
     maTim = Validator::catKhoangTrang(maTim);
 
-    DeviceType* kq = repo.timKiemTheoMa(maTim);
-    if (kq != nullptr) {
-        std::cout << "\n>> Ket qua tim thay:\n";
-        kq->display(); // In dang the chi tiet
-    } else {
-        std::cout << "!! Khong tim thay ban ghi mang ma: " << maTim << "\n";
+    DeviceType* dt = repo.find(maTim);
+
+    if (dt == nullptr) {
+        std::cout << "Khong tim thay loai thiet bi co ma: "
+                  << maTim << "\n";
+    }
+    else {
+        std::cout << "\nThong tin loai thiet bi:\n";
+        dt->display();
     }
 }
 
+// Cap nhat thong tin loai thiet bi
 void DeviceTypeManager::capNhat() {
     std::cout << "\n--- CAP NHAT LOAI THIET BI ---\n";
     std::cout << "Nhap ma loai can sua: ";
-    std::string maTim;
-    std::getline(std::cin, maTim);
-    maTim = Validator::catKhoangTrang(maTim);
 
-    DeviceType* dt = repo.timKiemTheoMa(maTim);
-    if (dt == nullptr) {
-        std::cout << "!! Khong tim thay loai thiet bi nay!\n";
+    std::string maTim;
+
+    if (!std::getline(std::cin, maTim)) {
         return;
     }
 
-    std::cout << "\n>> Thong tin hien tai:\n";
+    maTim = Validator::catKhoangTrang(maTim);
+
+    DeviceType* dt = repo.find(maTim);
+
+    if (dt == nullptr) {
+        std::cout << "Khong tim thay loai thiet bi.\n";
+        return;
+    }
+
+    std::cout << "\nThong tin hien tai:\n";
     dt->display();
 
-    // Goi truc tiep phuong thuc da hinh tu Entity
-    dt->updateInfo();
+    // Sua tren ban sao truoc khi luu
+    DeviceType banSao = *dt;
+    banSao.updateInfo();
 
-    repo.capNhat(*dt);
-    std::cout << ">> Cap nhat va luu file thanh cong!\n";
+    if (repo.update(maTim, banSao)) {
+        std::cout << "Cap nhat thanh cong!\n";
+    }
+    else {
+        std::cout << "Cap nhat that bai. Khong the luu file.\n";
+    }
 }
 
+// Xoa loai thiet bi
 void DeviceTypeManager::xoa() {
     std::cout << "\n--- XOA LOAI THIET BI ---\n";
     std::cout << "Nhap ma loai can xoa: ";
-    std::string maTim;
-    std::getline(std::cin, maTim);
-    maTim = Validator::catKhoangTrang(maTim);
 
-    DeviceType* dt = repo.timKiemTheoMa(maTim);
-    if (dt == nullptr) {
-        std::cout << "!! Khong tim thay loai thiet bi!\n";
+    std::string maTim;
+
+    if (!std::getline(std::cin, maTim)) {
         return;
     }
 
-    std::cout << "\n>> Thong tin ban ghi muon xoa:\n";
+    maTim = Validator::catKhoangTrang(maTim);
+
+    DeviceType* dt = repo.find(maTim);
+
+    if (dt == nullptr) {
+        std::cout << "Khong tim thay loai thiet bi.\n";
+        return;
+    }
+
+    std::cout << "\nThong tin loai thiet bi muon xoa:\n";
     dt->display();
 
-    std::cout << "\n>> Xac nhan xoa? (y/n): ";
+    std::cout << "Ban co chac muon xoa? (y/n): ";
+
     std::string xacNhan;
-    std::getline(std::cin, xacNhan);
+
+    if (!std::getline(std::cin, xacNhan)) {
+        return;
+    }
+
     if (xacNhan == "y" || xacNhan == "Y") {
-        repo.xoa(maTim);
-        std::cout << ">> Da xoa ban ghi khoi file thanh cong!\n";
-    } else {
-        std::cout << ">> Da huy thao tac xoa.\n";
+        if (repo.remove(maTim)) {
+            std::cout << "Da xoa loai thiet bi.\n";
+        }
+        else {
+            std::cout << "Xoa that bai. Khong the luu file.\n";
+        }
+    }
+    else {
+        std::cout << "Da huy thao tac xoa.\n";
     }
 }
