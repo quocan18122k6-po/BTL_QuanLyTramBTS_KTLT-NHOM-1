@@ -5,7 +5,7 @@
 #include <string>
 #include <sstream>
 
-class Date : public Entity {
+class Date {
     private:
         int ngay;
         int thang;
@@ -67,7 +67,7 @@ class Date : public Entity {
             if(ss >> ngay >> kiTu1 >> thang >> kiTu2 >> nam){
                 std::string duLieuThua;
                 if (ss >> duLieuThua) return false;
-                if((kiTu1 == '/' || kiTu1 =='-') && (kiTu2 == '/' || kiTu2 =='-')){
+                if(kiTu1 == kiTu2 && (kiTu1 == '/' || kiTu1 == '-')){
                     if(kiemTraHopLe(ngay, thang, nam)){
                         this->ngay = ngay;
                         this->thang = thang;
@@ -162,10 +162,12 @@ class Date : public Entity {
     bool operator>=(const Date& doiTuongKhac) const {
         return !(*this < doiTuongKhac);
     }
-
+    std::string toString() const {
+    return xuatRaChuoi();
+}
     // Ghi doi tuong Date ra luong xuat.
     friend std::ostream& operator<<(std::ostream& luongXuat, const Date& dt) {
-        luongXuat << dt.toString();
+        luongXuat << dt.xuatRaChuoi();
         return luongXuat;
     }
 
@@ -173,7 +175,7 @@ class Date : public Entity {
     friend std::istream& operator>>(std::istream& luongNhap, Date& dt) {
         std::string chuoiTam;
         if (luongNhap >> chuoiTam) {
-            if (!dt.fromString(chuoiTam)) {
+            if (!dt.napTuChuoi(chuoiTam)) {
                 luongNhap.setstate(std::ios::failbit);
             }
         }
