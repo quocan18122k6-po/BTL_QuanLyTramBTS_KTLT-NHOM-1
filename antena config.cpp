@@ -112,6 +112,18 @@ void AntennaConfig::input() {
 			cout << loi.what() << endl;
 		}
 	}
+	while (true) {
+		try {
+			string loaiAntenMoi =
+				InputHelper::getString("Nhap loai anten: ");
+
+			antenMoi.setLoaiAnten(loaiAntenMoi);
+			break;
+		}
+		catch (const invalid_argument& loi) {
+			cout << loi.what() << endl;
+		}
+	}
 	//nhap goc tilt
 	double gocMoi = InputHelper::getDouble("Nhap goc tilt (-90 den 90): ",-90,90);
 	antenMoi.setGocNgangTilt(gocMoi);
