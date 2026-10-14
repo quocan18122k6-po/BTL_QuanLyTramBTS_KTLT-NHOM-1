@@ -149,12 +149,10 @@ void DeviceType::display() const {
 
 // Hien thi mot dong trong bang
 void DeviceType::displayRow() const {
-   void DeviceType::displayRow() const {
     cout << "| " << left << setw(10) << id << " "
          << "| " << setw(23) << tenLoai << " "
          << "| " << setw(30) << chucNang << " "
          << "| " << setw(20) << nhaSanXuat << " |\n";
-}
 }
 
 // Chuyen thong tin thanh chuoi de luu file
@@ -334,7 +332,6 @@ void DeviceTypeManager::xemDanhSach() {
         return;
     }
 
-    DeviceType::inDuongKeBang();
     DeviceType::inTieuDeBang();
     // duyet tung doi tuong DeviceType trong danhSach va hien thi theo hang
     for (const DeviceType& dt : danhSach) {
