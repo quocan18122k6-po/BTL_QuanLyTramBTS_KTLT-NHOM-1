@@ -1,3 +1,4 @@
+
 #ifndef INSTALLED_DEVICE_H
 #define INSTALLED_DEVICE_H
 
@@ -5,6 +6,9 @@
 #include "Entity.h"
 #include "Repository.h"
 #include "Date.h"
+
+class BtsStation;
+class DeviceType;
 
 // Lop thuc the thiet bi lap dat
 class InstalledDevice : public Entity {
@@ -65,6 +69,8 @@ public:
 class InstalledDeviceManager {
 private:
     Repository<InstalledDevice> repo;
+    Repository<DeviceType>& repoLoai;
+    Repository<BtsStation>& repoTram;
 
     void hienThiMenu() const;
     void themMoi();
@@ -74,7 +80,9 @@ private:
     void xoa();
 
 public:
-    InstalledDeviceManager();
+    // Nhan hai danh muc dung chung de kiem tra ma loai va ma tram.
+    InstalledDeviceManager(Repository<DeviceType>& repoLoai,
+                           Repository<BtsStation>& repoTram);
     void chayChuongTrinh();
 };
 
