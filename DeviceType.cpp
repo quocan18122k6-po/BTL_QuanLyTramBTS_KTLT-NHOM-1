@@ -4,12 +4,12 @@
 #include "Validator.h"
 #include "InstalledDevice.h"
 
-#include <fstream>
-#include <iostream>
-#include <iomanip>
+#include <fstream>              // ifstream để đọc file thiết bị lắp đặt trước khi xóa
+#include <iostream>             
+#include <iomanip>              //setw() để căn cột bảng
 #include <sstream>
-#include <stdexcept>
-#include <vector>
+#include <stdexcept>            // invalid_argument để báo dữ liệu không hợp lệ
+#include <vector>               
 
 using namespace std;
 
