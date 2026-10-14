@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "Repository.h"
+#include "BtsStation.h"
 #include <string>
        //contructor
 class AntennaConfig : public Entity {
@@ -41,4 +42,4 @@ public:
 		void updateInfo();
 	};
 // Ham mo menu va xu ly CRUD Anten.
-void quanLyAnten(Repository<AntennaConfig>& repoAnten);
+void quanLyAnten(Repository<AntennaConfig>& repoAnten, Repository<BtsStation>& repoTram);
