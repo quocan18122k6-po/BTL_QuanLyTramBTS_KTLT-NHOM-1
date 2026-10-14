@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "Repository.h"
 #include <string>
        //contructor
 class AntennaConfig : public Entity {
@@ -39,3 +40,5 @@ public:
 		void fromString(const std::string &line) ;
 		void updateInfo();
 	};
+// Ham mo menu va xu ly CRUD Anten.
+void quanLyAnten(Repository<AntennaConfig>& repoAnten);
