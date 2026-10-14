@@ -149,29 +149,12 @@ void DeviceType::display() const {
 
 // Hien thi mot dong trong bang
 void DeviceType::displayRow() const {
-    // Chi rut gon ban hien thi; khong sua du lieu cua doi tuong.
-    string maHienThi = id;
-    string tenHienThi = tenLoai;
-    string chucNangHienThi = chucNang;
-    string nsxHienThi = nhaSanXuat;
-
-    if (!Validator::kiemTraDoDai(maHienThi, 10)) {
-        maHienThi = maHienThi.substr(0, 7) + "...";
-    }
-    if (!Validator::kiemTraDoDai(tenHienThi, 23)) {
-        tenHienThi = tenHienThi.substr(0, 20) + "...";
-    }
-    if (!Validator::kiemTraDoDai(chucNangHienThi, 30)) {
-        chucNangHienThi = chucNangHienThi.substr(0, 27) + "...";
-    }
-    if (!Validator::kiemTraDoDai(nsxHienThi, 20)) {
-        nsxHienThi = nsxHienThi.substr(0, 17) + "...";
-    }
-
-    cout << "| " << left << setw(10) << maHienThi << " "
-         << "| " << setw(23) << tenHienThi << " "
-         << "| " << setw(30) << chucNangHienThi << " "
-         << "| " << setw(20) << nsxHienThi << " |\n";
+   void DeviceType::displayRow() const {
+    cout << "| " << left << setw(10) << id << " "
+         << "| " << setw(23) << tenLoai << " "
+         << "| " << setw(30) << chucNang << " "
+         << "| " << setw(20) << nhaSanXuat << " |\n";
+}
 }
 
 // Chuyen thong tin thanh chuoi de luu file
@@ -179,7 +162,6 @@ void DeviceType::displayRow() const {
 string DeviceType::toString() const {
     return id + "|" + tenLoai + "|" + chucNang + "|" + nhaSanXuat;
 }
-
 // Doc thong tin tu file
 void DeviceType::fromString(const string& line) {
     stringstream ss(line);
@@ -198,10 +180,10 @@ void DeviceType::fromString(const string& line) {
 
     // Kiem tra co thua truong du lieu khong
     if (Validator::chuaKyTuPhanCach(nsx)) {
-        throw invalid_argument("Dong du lieu co thua truong");
+        throw invalid_argument("Dong du lieu khong dung dinh dang");
     }
 
-    // Constructor dung lai cac setter de kiem tra tung truong.
+    // ham khôi tao dung lai cac setter de kiem tra tung truong.
     // Chi thay doi doi tuong hien tai khi ca ban ghi hop le.
     DeviceType duLieuMoi(ma, ten, cn, nsx);
     *this = duLieuMoi;
@@ -249,7 +231,7 @@ void DeviceType::updateInfo() {
 
 // LOP DEVICETYPEMANAGER
 
-// Constructor
+// ham khoi tao
 DeviceTypeManager::DeviceTypeManager()
     : repo("data/device_types.txt") {
 }
@@ -295,14 +277,14 @@ void DeviceTypeManager::chayChuongTrinh() {
                     break;
             }
         }
-        catch (const ios_base::failure& e) {
-            // InputHelper nem ngoai le khi luong nhap ket thuc.
-            // Thoat menu de tranh lap lai lien tuc khi khong con du lieu.
-            cout << "Dung nhap lieu: " << e.what() << "\n";
+        // bat loi khi nguoi dung nhap lieu khong hop le
+        catch (const ios_base::failure& loi) {
+            cout << "Dung nhap lieu: " << loi.what() << "\n";
             break;
         }
-        catch (const exception& e) {
-            cout << "Da xay ra loi: " << e.what() << "\n";
+        // bat cac loi con lai
+        catch (const exception& loi) {
+            cout << "Da xay ra loi: " << loi.what() << "\n";
         }
     }
 }
@@ -314,13 +296,13 @@ void DeviceTypeManager::themMoi() {
     string maNhap;
 
     while (true) {
-        maNhap = InputHelper::getString("Nhap ma loai (VD: LT01): ");
+        maNhap = InputHelper::getString("Nhap ma loai: ");
 
         if (!Validator::kiemTraMaHopLe(maNhap)) {
             cout << "Ma loai khong hop le. Hay nhap lai.\n";
             continue;
         }
-
+        // Kiem tra ma loai da ton tai chua
         if (repo.exists(maNhap)) {
             cout << "Ma loai da ton tai. Hay nhap ma khac.\n";
             continue;
@@ -332,8 +314,8 @@ void DeviceTypeManager::themMoi() {
     DeviceType dt;
     dt.setId(maNhap);
     dt.input();
-
-    if (repo.add(dt)) {
+    
+    if (repo.add(dt)) {         // them loai thiet bi vao repository va luu vao file
         cout << "Them loai thiet bi thanh cong!\n";
     }
     else {
@@ -344,20 +326,20 @@ void DeviceTypeManager::themMoi() {
 // Xem danh sach loai thiet bi
 void DeviceTypeManager::xemDanhSach() {
     cout << "\n--- DANH SACH LOAI THIET BI ---\n";
-
-    const vector<DeviceType>& danhSach = repo.getAll();
+// Lay danh sach loai thiet bi tu repository qua tham chieu
+    const vector<DeviceType>& danhSach = repo.getAll();         // danhSach la ten goi khac cua records trong Repository.h
 
     if (danhSach.empty()) {
         cout << "Hien chua co du lieu.\n";
         return;
     }
 
+    DeviceType::inDuongKeBang();
     DeviceType::inTieuDeBang();
-
+    // duyet tung doi tuong DeviceType trong danhSach va hien thi theo hang
     for (const DeviceType& dt : danhSach) {
         dt.displayRow();
     }
-
     DeviceType::inDuongKeBang();
 
     cout << "Tong cong: " << danhSach.size() << " ban ghi.\n";
@@ -376,6 +358,7 @@ void DeviceTypeManager::timKiem() {
     }
     else {
         cout << "\nThong tin loai thiet bi:\n";
+        // goi ham hien thi thong tin chi tiet cua doi tuong DeviceType qua con tro dt
         dt->display();
     }
 }
@@ -384,7 +367,7 @@ void DeviceTypeManager::timKiem() {
 void DeviceTypeManager::capNhat() {
     cout << "\n--- CAP NHAT LOAI THIET BI ---\n";
     string maTim = InputHelper::getString("Nhap ma loai can sua: ");
-
+    // tao con tro DeviceType de tim kiem trong repository
     DeviceType* dt = repo.find(maTim);
 
     if (dt == nullptr) {
@@ -393,12 +376,13 @@ void DeviceTypeManager::capNhat() {
     }
 
     cout << "\nThong tin hien tai:\n";
+    // goi ham hien thi thong tin chi tiet cua doi tuong DeviceType qua con tro dt
     dt->display();
 
     // Sua tren ban sao truoc khi luu
     DeviceType banSao = *dt;
     banSao.updateInfo();
-
+    //thay du lieu cua doi tuong co maTim bang du lieu cua banSao va luu vao file
     if (repo.update(maTim, banSao)) {
         cout << "Cap nhat thanh cong!\n";
     }
@@ -433,8 +417,8 @@ void DeviceTypeManager::xoa() {
     }
 
     if (xacNhan == "y" || xacNhan == "Y") {
-        // Doc file moi nhat de kiem tra tham chieu truoc khi xoa.
-        // Dung InstalledDevice::fromString(), khong tu viet lai quy tac doc.
+
+        // tao mot canh cong de co the doc file
         ifstream fileThietBi("data/installed_devices.txt");
         if (!fileThietBi.is_open()) {
             cout << "Khong the kiem tra file data/installed_devices.txt.\n";
@@ -468,12 +452,12 @@ void DeviceTypeManager::xoa() {
                 return;
             }
         }
-
+        //co loi nghiem trong hoac vòng đọc dừng mà chưa đến cuối file
         if (fileThietBi.bad() || !fileThietBi.eof()) {
             cout << "Loi khi doc file thiet bi lap dat. Chua xoa loai thiet bi.\n";
             return;
         }
-
+        // tim doi tuong co maTim trong repository va xoa doi tuong do, dong thoi luu lai vao file
         if (repo.remove(maTim)) {
             cout << "Da xoa loai thiet bi.\n";
         }
