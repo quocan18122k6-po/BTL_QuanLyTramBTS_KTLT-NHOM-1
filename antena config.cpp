@@ -6,7 +6,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <iomanip>
-
+#include <vector>
 using namespace std;
 //constructor
 AntennaConfig::AntennaConfig() {
@@ -89,7 +89,7 @@ void AntennaConfig::setBangTan(const string& bangTanMoi) {
 	}
 	bangTan = giaTri;
 }
-//nhap tu ban phim-CREATE
+//nhap tu ban phim
 void AntennaConfig::input() {
 	AntennaConfig antenMoi;
 	//vong lap nhap ma anten
@@ -144,7 +144,7 @@ void AntennaConfig::input() {
 	*this = antenMoi;
 
 }
-// hien thi du lieu-READ
+// hien thi du lieu
 void AntennaConfig::display() const {
 	cout << "Ma anten: " << id << endl;
 	cout << "Ma tram: " << maTram << endl;
@@ -183,7 +183,7 @@ string AntennaConfig::toString() const {
 void AntennaConfig::fromString(const string& line) {
 	// check du lieu co dung 6 cot hay ko
 	int soDau = 0;
-	for (int i = 0;i < line.size();i++) {
+	for (int i = 0;i <(int)line.size();i++) {
 		if (line[i] == '|') {
 			soDau++;
 		}
@@ -219,7 +219,7 @@ void AntennaConfig::fromString(const string& line) {
 	AntennaConfig antenDoc(idDoc, maTramDoc, loaiAntenDoc, goc, huong, bangTanDoc);
 	*this = antenDoc; // chi khi cac du lieu hop le moi gan vao doi tuong
 }
-//cap nhat thong tin-UPDATE
+//cap nhat thong tin
 void AntennaConfig::updateInfo() {
 	cout << "\n Thong tin hien tai" << endl;
 	display();
@@ -270,7 +270,7 @@ void AntennaConfig::updateInfo() {
 }
 // Mo menu con va dieu phoi cac thao tac CRUD (Them, Xem, Tim, Sua, Xoa) cho Anten.
 // Truyen tham chieu (&) Repository<AntennaConfig> de cap nhat truc tiep vao kho du lieu goc.
-void quanLyAnten(Repository<AntennaConfig>& repoAnten) {
+void quanLyAnten(Repository<AntennaConfig>& repoAnten, Repository<BtsStation>& repoTram) {
 	int luaChon;
 
 	do {
@@ -294,6 +294,10 @@ void quanLyAnten(Repository<AntennaConfig>& repoAnten) {
 					cout << "Ma anten da ton tai.\n";
 					break;
 				}
+				if (!repoTram.exists(anten.getMaTram())) {
+					cout << "Ma tram khong ton tai. Huy them.\n";
+					break;
+				}
 
 				if (repoAnten.add(anten)) {
 					cout << "Them thanh cong.\n";
@@ -306,8 +310,7 @@ void quanLyAnten(Repository<AntennaConfig>& repoAnten) {
 			}
 
 			case 2: { //Hien thi danh sach anten dang bang
-				const vector<AntennaConfig>& danhSach =
-					repoAnten.getAll();
+				const vector<AntennaConfig>& danhSach = repoAnten.getAll();
 
 				if (danhSach.empty()) {
 					cout << "Danh sach anten dang rong.\n";
@@ -349,9 +352,7 @@ void quanLyAnten(Repository<AntennaConfig>& repoAnten) {
 			}
 
 			case 4: { //Cap nhat thong tin qua ban sao tam de dam bao an toan du lieu
-				string ma = InputHelper::getString(
-					"Nhap ma anten can sua: "
-				);
+				string ma = InputHelper::getString("Nhap ma anten can sua: ");
 
 				const AntennaConfig* anten = repoAnten.find(ma);
 
@@ -363,6 +364,10 @@ void quanLyAnten(Repository<AntennaConfig>& repoAnten) {
 				// Sua ban sao, khong sua truc tiep trong Repository.
 				AntennaConfig antenMoi = *anten;
 				antenMoi.updateInfo();
+				if (!repoTram.exists(antenMoi.getMaTram())) {
+					cout << "Ma tram khong ton tai. Huy cap nhat.\n";
+					break;
+				}
 
 				if (repoAnten.update(ma, antenMoi)) {
 					cout << "Cap nhat thanh cong.\n";
