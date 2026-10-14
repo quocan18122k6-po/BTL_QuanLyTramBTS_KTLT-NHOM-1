@@ -268,3 +268,163 @@ void AntennaConfig::updateInfo() {
 	}
 	*this = antenMoi;
 }
+// Mo menu con va dieu phoi cac thao tac CRUD (Them, Xem, Tim, Sua, Xoa) cho Anten.
+// Truyen tham chieu (&) Repository<AntennaConfig> de cap nhat truc tiep vao kho du lieu goc.
+void quanLyAnten(Repository<AntennaConfig>& repoAnten) {
+	int luaChon;
+
+	do {
+		cout << "\n========== QUAN LY ANTEN ==========\n";
+		cout << "1. Them anten\n";
+		cout << "2. Xem danh sach anten\n";
+		cout << "3. Tim anten theo ma\n";
+		cout << "4. Sua thong tin anten\n";
+		cout << "5. Xoa anten\n";
+		cout << "0. Quay lai\n";
+
+		luaChon = InputHelper::getInt("Nhap lua chon: ", 0, 5);
+
+		try {
+			switch (luaChon) {
+			case 1: { //Them moi anten (kiem tra trung ID truoc khi luu)
+				AntennaConfig anten;
+				anten.input();
+
+				if (repoAnten.exists(anten.getId())) {
+					cout << "Ma anten da ton tai.\n";
+					break;
+				}
+
+				if (repoAnten.add(anten)) {
+					cout << "Them thanh cong.\n";
+				}
+				else {
+					cout << "Them that bai, kiem tra file du lieu.\n";
+				}
+
+				break;
+			}
+
+			case 2: { //Hien thi danh sach anten dang bang
+				const vector<AntennaConfig>& danhSach =
+					repoAnten.getAll();
+
+				if (danhSach.empty()) {
+					cout << "Danh sach anten dang rong.\n";
+					break;
+				}
+
+				cout << left
+					<< setw(12) << "Ma anten" << " | "
+					<< setw(12) << "Ma tram" << " | "
+					<< setw(20) << "Loai anten" << " | "
+					<< setw(12) << "Tilt" << " | "
+					<< setw(12) << "Azimuth" << " | "
+					<< setw(15) << "Bang tan" << '\n';
+
+				for (int i = 0; i < (int)danhSach.size(); i++) {
+					danhSach[i].displayRow();
+				}
+
+				cout << right;
+				cout << "Tong so anten: " << danhSach.size() << '\n';
+				break;
+			}
+
+			case 3: { //Tim kiem va xem chi tiet anten theo ma
+				string ma = InputHelper::getString(
+					"Nhap ma anten can tim: "
+				);
+
+				const AntennaConfig* anten = repoAnten.find(ma);
+
+				if (anten == nullptr) {
+					cout << "Khong tim thay anten.\n";
+				}
+				else {
+					anten->display();
+				}
+
+				break;
+			}
+
+			case 4: { //Cap nhat thong tin qua ban sao tam de dam bao an toan du lieu
+				string ma = InputHelper::getString(
+					"Nhap ma anten can sua: "
+				);
+
+				const AntennaConfig* anten = repoAnten.find(ma);
+
+				if (anten == nullptr) {
+					cout << "Khong tim thay anten.\n";
+					break;
+				}
+
+				// Sua ban sao, khong sua truc tiep trong Repository.
+				AntennaConfig antenMoi = *anten;
+				antenMoi.updateInfo();
+
+				if (repoAnten.update(ma, antenMoi)) {
+					cout << "Cap nhat thanh cong.\n";
+				}
+				else {
+					cout << "Cap nhat that bai, kiem tra file du lieu.\n";
+				}
+
+				break;
+			}
+
+			case 5: { //Xoa anten khoi kho luu tru (co xac nhan y/n)
+				string ma = InputHelper::getString(
+					"Nhap ma anten can xoa: "
+				);
+
+				const AntennaConfig* anten = repoAnten.find(ma);
+
+				if (anten == nullptr) {
+					cout << "Khong tim thay anten.\n";
+					break;
+				}
+
+				anten->display();
+
+				string xacNhan;
+
+				do {
+					xacNhan = InputHelper::getString(
+						"Xac nhan xoa (y/n): "
+					);
+
+					if (xacNhan != "y" && xacNhan != "Y"
+						&& xacNhan != "n" && xacNhan != "N") {
+						cout << "Chi nhap y hoac n.\n";
+					}
+				} while (
+					xacNhan != "y" && xacNhan != "Y"
+					&& xacNhan != "n" && xacNhan != "N"
+					);
+
+				if (xacNhan == "n" || xacNhan == "N") {
+					cout << "Da huy xoa.\n";
+					break;
+				}
+
+				if (repoAnten.remove(ma)) {
+					cout << "Xoa thanh cong.\n";
+				}
+				else {
+					cout << "Xoa that bai, kiem tra file du lieu.\n";
+				}
+
+				break;
+			}
+
+			case 0:
+				break;
+			}
+		}
+		catch (const invalid_argument& loi) {
+			cout << "Loi du lieu: " << loi.what() << '\n';
+		}
+	} while (luaChon != 0);
+}
