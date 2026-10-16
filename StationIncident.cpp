@@ -301,6 +301,7 @@ void quanLySuCo(Repository<StationIncident> &repoSuCo,Repository<BtsStation> &re
 					<< setw(15) << "Uu tien" << " | "
 					<< setw(12) << "Ngay xay ra" << " | "
 					<< setw(15) << "Ngay khoi phuc" << endl;
+				cout << string(93, '-') << endl;
 				for (int i = 0;i < (int)danhSach.size();i++) {
 					danhSach[i].displayRow();
 				}

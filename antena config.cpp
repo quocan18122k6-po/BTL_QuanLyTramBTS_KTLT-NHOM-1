@@ -321,9 +321,10 @@ void quanLyAnten(Repository<AntennaConfig>& repoAnten, Repository<BtsStation>& r
 					<< setw(12) << "Ma anten" << " | "
 					<< setw(12) << "Ma tram" << " | "
 					<< setw(20) << "Loai anten" << " | "
-					<< setw(12) << "Tilt" << " | "
-					<< setw(12) << "Azimuth" << " | "
+					<< setw(12) << "Goc ngang" << " | "
+					<< setw(12) << "Huong phat" << " | "
 					<< setw(15) << "Bang tan" << '\n';
+				cout << string(106, '-') << endl;
 
 				for (int i = 0; i < (int)danhSach.size(); i++) {
 					danhSach[i].displayRow();
