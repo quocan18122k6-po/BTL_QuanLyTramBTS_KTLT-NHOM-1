@@ -2,47 +2,124 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
 class InputHelper {
-public:
-    static string getString(string thongBao) {
-        string ketQua;
-
-        cout << thongBao;
-        getline(cin, ketQua);
-
-        while (ketQua.empty()) {
-            cout << "Khong duoc de trong, nhap lai: ";
-            getline(cin, ketQua);
+private:
+    // Cat khoang trang o dau va cuoi chuoi
+    static string catKhoangTrang(const string& str) {
+        size_t dau = str.find_first_not_of(" \t\n\r\f\v");
+        if (dau == string::npos) {
+            return "";
         }
-
-        return ketQua;
+        size_t cuoi = str.find_last_not_of(" \t\n\r\f\v");
+        return str.substr(dau, cuoi - dau + 1);
     }
 
-    static int getInt(string thongBao, int minVal = -999999, int maxVal = 999999) {
-        int so;
+public:
+    // 1. Nhap chuoi: ho tro bat buoc hoac cho phep bo trong khi update
+    static string getString(string thongBao, bool choPhepRong = false) {
+        string ketQua;
 
-        while (1) {
+        while (true) {
             cout << thongBao;
-            cin >> so;
-
-            if (cin.fail()) {
-                cout << "Loi: Phai nhap so nguyen!\n";
-                cin.clear();
-                cin.ignore(1000, '\n');
+            if (!getline(cin, ketQua)) {
+                throw ios_base::failure("Ket thuc luong nhap.");
             }
-            else if (so < minVal || so > maxVal) {
+
+            ketQua = catKhoangTrang(ketQua);
+
+            if (!ketQua.empty() || choPhepRong) {
+                return ketQua;
+            }
+
+            cout << "Loi: Khong duoc de trong, vui long nhap lai!\n";
+        }
+    }
+
+    // 2. Nhap so nguyen co kiem tra hop le
+    // - choPhepRong = true: nguoi dung an Enter -> tra ve giaTriMacDinh (dung khi Update)
+    static int getInt(string thongBao, int minVal = -999999, int maxVal = 999999, 
+                      bool choPhepRong = false, int giaTriMacDinh = 0) {
+        string dong;
+
+        while (true) {
+            cout << thongBao;
+            if (!getline(cin, dong)) {
+                throw ios_base::failure("Ket thuc luong nhap.");
+            }
+
+            dong = catKhoangTrang(dong);
+
+            // Xu ly khi bo trong (Enter)
+            if (dong.empty()) {
+                if (choPhepRong) {
+                    return giaTriMacDinh;
+                }
+                cout << "Loi: Khong duoc de trong, phai nhap so nguyen!\n";
+                continue;
+            }
+
+            stringstream ss(dong);
+            int so;
+            char kyTuDu;
+
+            if (!(ss >> so) || (ss >> kyTuDu)) {
+                cout << "Loi: Du lieu nhap phai la so nguyen!\n";
+                continue;
+            }
+
+            if (so < minVal || so > maxVal) {
                 cout << "Loi: Gia tri phai nam trong [" 
                      << minVal << " - " << maxVal << "]!\n";
-                cin.ignore(1000, '\n');
+                continue;
             }
-            else {
-                cin.ignore(1000, '\n');
-                return so;
+
+            return so;
+        }
+    }
+
+    // 3. Nhap so thuc (double) - phuc vu SV4 nhap goc tilt, azimuth
+    // - choPhepRong = true: nguoi dung an Enter -> tra ve giaTriMacDinh (dung khi Update)
+    static double getDouble(string thongBao, double minVal = -999999.0, double maxVal = 999999.0, 
+                            bool choPhepRong = false, double giaTriMacDinh = 0.0) {
+        string dong;
+
+        while (true) {
+            cout << thongBao;
+            if (!getline(cin, dong)) {
+                throw ios_base::failure("Ket thuc luong nhap.");
             }
+
+            dong = catKhoangTrang(dong);
+
+            // Xu ly khi bo trong (Enter)
+            if (dong.empty()) {
+                if (choPhepRong) {
+                    return giaTriMacDinh;
+                }
+                cout << "Loi: Khong duoc de trong, phai nhap so thuc!\n";
+                continue;
+            }
+
+            stringstream ss(dong);
+            double so;
+            char kyTuDu;
+
+            if (!(ss >> so) || (ss >> kyTuDu)) {
+                cout << "Loi: Du lieu nhap phai la so thuc hop le!\n";
+                continue;
+            }
+
+            if (so < minVal || so > maxVal) {
+                cout << "Loi: Gia tri phai nam trong [" 
+                     << minVal << " - " << maxVal << "]!\n";
+                continue;
+            }
+
+            return so;
         }
     }
 };
-
