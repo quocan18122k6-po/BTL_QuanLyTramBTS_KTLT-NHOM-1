@@ -231,7 +231,7 @@ void DeviceType::updateInfo() {
 
 // ham khoi tao
 DeviceTypeManager::DeviceTypeManager()
-    : repo("D:/Dev-Cpp/BTL_QuanLyTramBTS_KTLT NHOM 1/data/device_types.txt") {
+    : repo("data/device_types.txt") {
 }
 
 // Hien thi menu
@@ -416,9 +416,9 @@ void DeviceTypeManager::xoa() {
     if (xacNhan == "y" || xacNhan == "Y") {
 
         // tao mot canh cong de co the doc file
-        ifstream fileThietBi("D:/Dev-Cpp/BTL_QuanLyTramBTS_KTLT NHOM 1/data/devices.txt");
+        ifstream fileThietBi("data/devices.txt");
         if (!fileThietBi.is_open()) {
-            cout << "Khong the kiem tra file D:/Dev-Cpp/BTL_QuanLyTramBTS_KTLT NHOM 1/data/devices.txt.\n";
+            cout << "Khong the kiem tra file data/devices.txt.\n";
             cout << "Chua xoa loai thiet bi. Hay kiem tra file du lieu.\n";
             return;
         }

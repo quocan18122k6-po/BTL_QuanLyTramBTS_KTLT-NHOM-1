@@ -7,9 +7,9 @@
 #include <string>
 
 namespace {
-    // Duong dan toi thu muc du lieu dung de test.
+    // Thu muc data nam trong thu muc chay chuong trinh.
     std::string duongDanData(const std::string& tenFile) {
-        return "D:/Dev-Cpp/BTL_QuanLyTramBTS_KTLT NHOM 1/data/" + tenFile;
+        return "data/" + tenFile;
     }
     void thongBaoKetQua(bool thanhCong) {
         if (thanhCong) {

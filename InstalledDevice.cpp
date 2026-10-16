@@ -290,7 +290,7 @@ void InstalledDevice::updateInfo() {
     //truyen tham chieu den repository loai thiet bi va repository tram BTS
 InstalledDeviceManager::InstalledDeviceManager(Repository<DeviceType>& repoLoai,
                                                Repository<BtsStation>& repoTram)
-    : repo("D:/Dev-Cpp/BTL_QuanLyTramBTS_KTLT NHOM 1/data/devices.txt"), repoLoai(repoLoai), repoTram(repoTram) {
+    : repo("data/devices.txt"), repoLoai(repoLoai), repoTram(repoTram) {
 }
 
 void InstalledDeviceManager::hienThiMenu() const {
