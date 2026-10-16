@@ -1,0 +1,10 @@
+KV001|Khu vuc thu nghiem 1|Dong bang|Trung tam vien thong 1
+KV002|Khu vuc thu nghiem 2|Dong bang|Trung tam vien thong 2
+KV003|Ninh Binh|Nui|trung tam cai nghien
+KV004|Khu vuc thu nghiem 4|Dong bang|Trung tam vien thong 4
+KV005|Khu vuc thu nghiem 5|Dong bang|Trung tam vien thong 5
+KV006|Khu vuc thu nghiem 6|Dong bang|Trung tam vien thong 6
+KV007|Khu vuc thu nghiem 7|Dong bang|Trung tam vien thong 7
+KV008|Khu vuc thu nghiem 8|Dong bang|Trung tam vien thong 8
+KV009|Khu vuc thu nghiem 9|Dong bang|Trung tam vien thong 9
+KV010|Khu vuc thu nghiem 10|Dong bang|Trung tam vien thong 10

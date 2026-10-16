@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="BTSApp/BTSApp.vcxproj" Id="7d11cbf3-1f11-4f6a-9c7e-d7bb0af68fb7" />
+</Solution>

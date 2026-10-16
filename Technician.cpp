@@ -383,15 +383,15 @@ void quanLyTechnician(Repository<Technician>& repoKTV, Repository<MaintenanceTic
 
 				// Kiểm tra ràng buộc khóa ngoại 
 				if (repoPhieu != nullptr) {
-					bool đangCoPhieu = false;
+					bool dangCoPhieu = false;
 					const vector<MaintenanceTicket>& dsPhieu = repoPhieu->getAll();
 					for (size_t i = 0; i < dsPhieu.size(); ++i) {
 						if (dsPhieu[i].getMaKTV() == ma) {
-							đangCoPhieu = true;
+							dangCoPhieu = true;
 							break;
 						}
 					}
-					if (đangCoPhieu) {
+					if (dangCoPhieu) {
 						cout << "Loi: Khong the xoa KTV " << ma << " vi dang co phieu bao tri tham chieu den!" << endl;
 						break;
 					}

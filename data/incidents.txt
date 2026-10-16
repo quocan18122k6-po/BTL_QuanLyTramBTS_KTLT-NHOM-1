@@ -1,0 +1,10 @@
+SC001|TR001|Mat nguon|Khan cap|01/09/2026|
+SC002|TR002|Loi truyen dan|Cao|02/09/2026|02/09/2026
+SC003|TR003|Mat nguon|Trung binh|03/09/2026|
+SC004|TR004|Loi truyen dan|Khan cap|04/09/2026|04/09/2026
+SC005|TR005|Mat nguon|Cao|05/09/2026|
+SC006|TR006|Loi truyen dan|Trung binh|06/09/2026|06/09/2026
+SC007|TR007|Mat nguon|Khan cap|07/09/2026|
+SC008|TR008|Loi truyen dan|Cao|08/09/2026|08/09/2026
+SC009|TR001|Mat nguon|Trung binh|09/09/2026|
+SC010|TR002|Loi truyen dan|Khan cap|10/09/2026|10/09/2026

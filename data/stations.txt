@@ -1,0 +1,11 @@
+TR001|Tram BTS thu nghiem 1|KV001|Dia diem thu nghiem 1|21.001|105.001|Hoat dong
+TR009|Tram BTS thu nghiem 9|KV001|Dia diem thu nghiem 9|21.009|105.009|Hoat dong
+TR002|Tram BTS thu nghiem 2|KV002|Dia diem thu nghiem 2|21.002|105.002|Hoat dong
+TR010|Tram BTS thu nghiem 10|KV002|Dia diem thu nghiem 10|21.01|105.01|Hoat dong
+TR003|Dassensei|KV004|nam dinh|4|4|bao tri
+TR011|tram cai nghien|KV003|nam dinh|90|180|hoat dong
+TR004|Tram BTS thu nghiem 4|KV004|Dia diem thu nghiem 4|21.004|105.004|Hoat dong
+TR005|Tram BTS thu nghiem 5|KV005|Dia diem thu nghiem 5|21.005|105.005|Hoat dong
+TR006|Tram BTS thu nghiem 6|KV006|Dia diem thu nghiem 6|21.006|105.006|Hoat dong
+TR007|Tram BTS thu nghiem 7|KV007|Dia diem thu nghiem 7|21.007|105.007|Hoat dong
+TR008|Tram BTS thu nghiem 8|KV008|Dia diem thu nghiem 8|21.008|105.008|Hoat dong
