@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <stdexcept>
 
 class Date {
     private:
@@ -17,18 +18,14 @@ class Date {
     thang = 1;
     nam = 1901;
 }
-        // Khoi tao co tham so
-        Date(int ngay, int thang, int nam){
-            if(kiemTraHopLe(ngay, thang, nam)){
-                this->ngay = ngay;
-                this->thang = thang;
-                this->nam = nam;
+        // Khoi tao co tham so; bao loi neu ngay thang nam khong hop le.
+        Date(int ngay, int thang, int nam) {
+            if (!kiemTraHopLe(ngay, thang, nam)) {
+                throw std::invalid_argument("Ngay thang nam khong hop le.");
             }
-            else{
-                this->ngay = 1;
-                this->thang = 1;
-                this->nam = 1901;
-            }
+            this->ngay = ngay;
+            this->thang = thang;
+            this->nam = nam;
         }
 
         // Check nam nhuan
@@ -176,7 +173,7 @@ class Date {
         std::string chuoiTam;
         if (luongNhap >> chuoiTam) {
             if (!dt.napTuChuoi(chuoiTam)) {
-                luongNhap.setstate(std::ios::failbit);
+                luongNhap.setstate(std::ios::failbit); // Bao loi luong neu chuoi khong hop le
             }
         }
         return luongNhap;
