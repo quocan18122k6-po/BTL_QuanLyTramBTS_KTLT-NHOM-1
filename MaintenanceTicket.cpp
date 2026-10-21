@@ -12,13 +12,13 @@
 using namespace std;
 
 namespace {
-	string toLowerStr(string s) {
+	string toLowerStr(string s) {// viet hoa thanh thuong
 		transform(s.begin(), s.end(), s.begin(), [](unsigned char c) { return static_cast<char>(tolower(c)); });
 		return s;
 	}
 }
 
-// Constructors
+// Khoi tao
 MaintenanceTicket::MaintenanceTicket() : Entity() {
 	maTram = "";
 	maKTV = "";
@@ -36,13 +36,13 @@ MaintenanceTicket::MaintenanceTicket(const string& id, const string& maTram, con
 	setKetQua(ketQua);
 }
 
-// Getters
+// Tra gtri cua thuoc tinh tuong ung Getters
 string MaintenanceTicket::getMaTram() const { return maTram; }
 string MaintenanceTicket::getMaKTV() const { return maKTV; }
 Date MaintenanceTicket::getNgayBaoTri() const { return ngayBaoTri; }
 string MaintenanceTicket::getKetQua() const { return ketQua; }
 
-// Setters
+// check SETTER
 void MaintenanceTicket::setMaTram(const string& maTramMoi) {
 	string tram = Validator::catKhoangTrang(maTramMoi);
 	if (!Validator::kiemTraMaHopLe(tram)) {
@@ -73,7 +73,7 @@ void MaintenanceTicket::setKetQua(const string& ketQuaMoi) {
 	ketQua = Validator::catKhoangTrang(ketQuaMoi);
 }
 
-// Input an toan
+// Input 
 void MaintenanceTicket::input() {
 	while (1) {
 		try {
@@ -129,7 +129,7 @@ void MaintenanceTicket::input() {
 	}
 }
 
-// FIX: Dung getId() thay vi id
+// Hien thi chi tiet
 void MaintenanceTicket::display() const {
 	cout << "------------------------------------------\n";
 	cout << "Ma phieu     : " << getId() << "\n";
@@ -154,7 +154,7 @@ string MaintenanceTicket::toString() const {
 	return getId() + "|" + maTram + "|" + maKTV + "|" + ngayBaoTri.xuatRaChuoi() + "|" + ketQua;
 }
 
-// Doc file tu chuoi va validate kieu Date 
+// Doc file tu chuoi 
 void MaintenanceTicket::fromString(const string& line) {
 	int soDau = 0;
 	for (int i = 0; i < (int)line.size(); i++) {
@@ -184,7 +184,7 @@ void MaintenanceTicket::fromString(const string& line) {
 	*this = phieuDoc;
 }
 
-// FIX: Cai dat operator<< va operator>>
+// Xuat nhap du lieu
 ostream& operator<<(ostream& out, const MaintenanceTicket& ticket) {
 	out << ticket.toString();
 	return out;
@@ -205,7 +205,7 @@ istream& operator>>(istream& in, MaintenanceTicket& ticket) {
 	}
 	return in;
 }
-
+// sua thong tin
 void MaintenanceTicket::updateInfo() {
 	cout << "\nThong tin hien tai:" << endl;
 	display();
@@ -273,7 +273,7 @@ void quanLyMaintenanceTicket(Repository<MaintenanceTicket>& repoPhieu, Repositor
 
 		try {
 			switch (luaChon) {
-			case 1: { // CREATE
+			case 1: { // Them phieu bao tri
 				MaintenanceTicket phieu;
 				phieu.input();
 
@@ -299,7 +299,7 @@ void quanLyMaintenanceTicket(Repository<MaintenanceTicket>& repoPhieu, Repositor
 				}
 				break;
 			}
-			case 2: { // READ ALL
+			case 2: { // Xem danh sach phieu bao tri
 				const vector<MaintenanceTicket>& danhSach = repoPhieu.getAll();
 				if (danhSach.empty()) {
 					cout << "Danh sach dang rong!" << endl;
@@ -321,7 +321,7 @@ void quanLyMaintenanceTicket(Repository<MaintenanceTicket>& repoPhieu, Repositor
 				cout << "Tong so phieu bao tri: " << danhSach.size() << endl;
 				break;
 			}
-			case 3: { //  Tim kiem 
+			case 3: { //  Tim kiem phieu bao tri 
 				cout << "1. Tim theo Ma phieu\n";
 				cout << "2. Tim theo Ma tram\n";
 				cout << "3. Tim theo Ma KTV\n";
@@ -361,7 +361,7 @@ void quanLyMaintenanceTicket(Repository<MaintenanceTicket>& repoPhieu, Repositor
 				}
 				break;
 			}
-			case 4: { // UPDATE
+			case 4: { // Sua thong tin phieu bao tri
 				string ma = InputHelper::getString("Nhap ma phieu can sua: ");
 				const MaintenanceTicket* phieu = repoPhieu.find(ma);
 				if (phieu == nullptr) {
@@ -389,7 +389,7 @@ void quanLyMaintenanceTicket(Repository<MaintenanceTicket>& repoPhieu, Repositor
 				}
 				break;
 			}
-			case 5: { // DELETE
+			case 5: { // Xoa phieu bao tri
 				string ma = InputHelper::getString("Nhap ma phieu can xoa: ");
 				const MaintenanceTicket* phieu = repoPhieu.find(ma);
 				if (phieu == nullptr) {
