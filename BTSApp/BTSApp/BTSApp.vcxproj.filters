@@ -39,7 +39,7 @@
     <ClCompile Include="..\..\StationIncident.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\antena config.cpp">
+    <ClCompile Include="..\..\AntennaConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Main.cpp">
@@ -71,7 +71,7 @@
     <ClInclude Include="..\..\StationIncident.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\antenna config.h">
+    <ClInclude Include="..\..\AntennaConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Date.h">

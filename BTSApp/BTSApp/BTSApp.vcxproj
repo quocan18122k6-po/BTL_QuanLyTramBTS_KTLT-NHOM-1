@@ -143,7 +143,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\antena config.cpp" />
+    <ClCompile Include="..\..\AntennaConfig.cpp" />
     <ClCompile Include="..\..\Application.cpp" />
     <ClCompile Include="..\..\BtsStation.cpp" />
     <ClCompile Include="..\..\DeviceType.cpp" />
@@ -155,7 +155,7 @@
     <ClCompile Include="..\..\Technician.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\antenna config.h" />
+    <ClInclude Include="..\..\AntennaConfig.h" />
     <ClInclude Include="..\..\Application.h" />
     <ClInclude Include="..\..\BtsStation.h" />
     <ClInclude Include="..\..\Date.h" />
