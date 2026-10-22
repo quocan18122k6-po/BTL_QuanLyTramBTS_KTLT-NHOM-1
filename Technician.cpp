@@ -12,14 +12,14 @@
 
 using namespace std;
 
-namespace {
+namespace {// viet hoa thanh thuong
 	string toLowerStr(string s) {
 		transform(s.begin(), s.end(), s.begin(), [](unsigned char c) { return static_cast<char>(tolower(c)); });
 		return s;
 	}
 }
 
-// Constructors
+//  Khoi tao
 Technician::Technician() : Entity() {
 	hoTen = "";
 	soDienThoai = "";
@@ -38,13 +38,13 @@ Technician::Technician(const string& id, const string& hoTen, const string& soDi
 	setDoiPhuTrach(doiPhuTrach);
 }
 
-// Getters
+// Tra gtri cua thuoc tinh tuong ung Getters
 string Technician::getHoTen() const { return hoTen; }
 string Technician::getSoDienThoai() const { return soDienThoai; }
 string Technician::getChungChi() const { return chungChi; }
 string Technician::getDoiPhuTrach() const { return doiPhuTrach; }
 
-// Setters
+// check SETTER
 void Technician::setHoTen(const string& hoTenMoi) {
 	if (Validator::laChuoiRong(hoTenMoi)) {
 		throw invalid_argument("Ho ten khong duoc de trong!");
@@ -163,7 +163,7 @@ void Technician::displayRow() const {
 string Technician::toString() const {
 	return getId() + "|" + hoTen + "|" + soDienThoai + "|" + chungChi + "|" + doiPhuTrach;
 }
-
+// Doc file tu chuoi 
 void Technician::fromString(const string& line) {
 	int soDau = 0;
 	for (int i = 0; i < (int)line.size(); i++) {
@@ -187,7 +187,7 @@ void Technician::fromString(const string& line) {
 	Technician ktvDoc(maDoc, tenDoc, sdtDoc, ccDoc, doiDoc);
 	*this = ktvDoc;
 }
-
+// Xuat nhap du lieu
 ostream& operator<<(ostream& out, const Technician& technician) {
 	out << technician.toString();
 	return out;
@@ -208,7 +208,7 @@ istream& operator>>(istream& in, Technician& technician) {
 	}
 	return in;
 }
-
+// sua thong tin
 void Technician::updateInfo() {
 	cout << "\nThong tin hien tai:" << endl;
 	display();
@@ -275,7 +275,7 @@ void quanLyTechnician(Repository<Technician>& repoKTV, Repository<MaintenanceTic
 
 		try {
 			switch (luaChon) {
-			case 1: { // CREATE
+			case 1: { // Them ky thuat vien
 				Technician ktv;
 				ktv.input();
 
@@ -291,7 +291,7 @@ void quanLyTechnician(Repository<Technician>& repoKTV, Repository<MaintenanceTic
 				}
 				break;
 			}
-			case 2: { // READ ALL
+			case 2: { // Xem danh sach ky thuat vien
 				const vector<Technician>& danhSach = repoKTV.getAll();
 				if (danhSach.empty()) {
 					cout << "Danh sach dang rong!" << endl;
@@ -313,7 +313,7 @@ void quanLyTechnician(Repository<Technician>& repoKTV, Repository<MaintenanceTic
 				cout << "Tong so ky thuat vien: " << danhSach.size() << endl;
 				break;
 			}
-			case 3: { // SEARCH
+			case 3: { // Tim kiem ky thuat vien
 				cout << "1. Tim theo Ma KTV\n";
 				cout << "2. Tim theo Ho ten\n";
 				cout << "3. Tim theo So dien thoai\n";
@@ -355,7 +355,7 @@ void quanLyTechnician(Repository<Technician>& repoKTV, Repository<MaintenanceTic
 				}
 				break;
 			}
-			case 4: { // UPDATE
+			case 4: { // Sua thong tin ky thuat vien
 				string ma = InputHelper::getString("Nhap ma KTV can sua: ");
 				const Technician* ktv = repoKTV.find(ma);
 				if (ktv == nullptr) {
@@ -373,7 +373,7 @@ void quanLyTechnician(Repository<Technician>& repoKTV, Repository<MaintenanceTic
 				}
 				break;
 			}
-			case 5: { // DELETE
+			case 5: { // Xoa ky thuat vien
 				string ma = InputHelper::getString("Nhap ma KTV can xoa: ");
 				const Technician* ktv = repoKTV.find(ma);
 				if (ktv == nullptr) {

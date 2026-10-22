@@ -175,7 +175,7 @@ void BtsStation::input() {
 
     while (true) {
         try {
-            setMaKhuVuc(readLine("Nhap ma khu vuc (FK): "));
+            setMaKhuVuc(readLine("Nhap ma khu vuc: "));
             break;
         } catch (const exception& e) {
             cout << "Loi: " << e.what() << '\n';
@@ -270,7 +270,7 @@ void BtsStation::updateInfo() {
         catch (const exception& e) { cout << "Loi: " << e.what() << ". Giu nguyen gia tri cu.\n"; }
     }
 
-    value = readLine("Ma khu vuc (FK) [" + maKhuVuc + "]: ", true);
+    value = readLine("Ma khu vuc [" + maKhuVuc + "]: ", true);
     if (!trim(value).empty()) {
         try { setMaKhuVuc(value); }
         catch (const exception& e) { cout << "Loi: " << e.what() << ". Giu nguyen gia tri cu.\n"; }
