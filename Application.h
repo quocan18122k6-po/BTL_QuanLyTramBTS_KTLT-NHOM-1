@@ -9,7 +9,7 @@
 #include "InstalledDevice.h"
 #include "Technician.h"
 #include "MaintenanceTicket.h"
-#include "antenna config.h"
+#include "AntennaConfig.h"
 #include "StationIncident.h"
 
 class Application {
@@ -32,15 +32,9 @@ private:
     void baoTri();
     void suCoVaAnten();
 
-    // Chua co menu Province rieng nen xu ly tai day.
-    void quanLyKhuVuc();
-
-    // Kiem tra truoc khi xoa.
-    bool tinhDangDuocSuDung(const std::string& maTinh) const;
-    bool tramDangDuocSuDung(const std::string& maTram);
 
 public:
-    // Tao thu muc data va nap cac kho du lieu.
+    // Nap cac kho du lieu tu thu muc data.
     Application();
 
     // Chay menu chinh.

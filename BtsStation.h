@@ -5,9 +5,13 @@
 #include "Province.h"
 #include "Repository.h"
 
-#include <functional>
 #include <iosfwd>
 #include <string>
+
+class InstalledDevice;
+class AntennaConfig;
+class MaintenanceTicket;
+class StationIncident;
 
 // Luu thong tin mot tram BTS. ID trong Entity duoc dung lam ma tram.
 class BtsStation : public Entity {
@@ -60,7 +64,12 @@ class BtsStationUseCase {
 private:
     Repository<BtsStation>& stationRepository;
     Repository<Province>& provinceRepository;
-    std::function<bool(const std::string&)> isReferenced;
+    Repository<InstalledDevice>& deviceRepository;
+    Repository<AntennaConfig>& antennaRepository;
+    Repository<MaintenanceTicket>& maintenanceRepository;
+    Repository<StationIncident>& incidentRepository;
+
+    bool tramDangDuocSuDung(const std::string& maTram);
 
     void addStation();
     void showStations() const;
@@ -73,8 +82,10 @@ public:
     BtsStationUseCase(
         Repository<BtsStation>& stationRepository,
         Repository<Province>& provinceRepository,
-        std::function<bool(const std::string&)> isReferenced =
-            std::function<bool(const std::string&)>()
+        Repository<InstalledDevice>& deviceRepository,
+        Repository<AntennaConfig>& antennaRepository,
+        Repository<MaintenanceTicket>& maintenanceRepository,
+        Repository<StationIncident>& incidentRepository
     );
 
     void run();

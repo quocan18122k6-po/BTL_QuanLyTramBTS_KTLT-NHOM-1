@@ -1,3 +1,7 @@
+#include "InstalledDevice.h"
+#include "AntennaConfig.h"
+#include "MaintenanceTicket.h"
+#include "StationIncident.h"
 #include "BtsStation.h"
 #include "InputHelper.h"
 #include "Validator.h"
@@ -362,10 +366,16 @@ void printStationHeader() {
 BtsStationUseCase::BtsStationUseCase(
     Repository<BtsStation>& stationRepository,
     Repository<Province>& provinceRepository,
-    function<bool(const string&)> isReferenced
+    Repository<InstalledDevice>& deviceRepository,
+    Repository<AntennaConfig>& antennaRepository,
+    Repository<MaintenanceTicket>& maintenanceRepository,
+    Repository<StationIncident>& incidentRepository
 ) : stationRepository(stationRepository),
     provinceRepository(provinceRepository),
-    isReferenced(isReferenced) {}
+    deviceRepository(deviceRepository),
+    antennaRepository(antennaRepository),
+    maintenanceRepository(maintenanceRepository),
+    incidentRepository(incidentRepository) {}
 
 void BtsStationUseCase::run() {
     while (true) {
@@ -505,6 +515,38 @@ void BtsStationUseCase::updateStation() {
         : "Cap nhat that bai; du lieu chua duoc luu.\n");
 }
 
+bool BtsStationUseCase::tramDangDuocSuDung(const std::string& maTram) {
+    // InstalledDeviceManager hien giu Repository rieng.
+    // Nap lai de kiem tra danh sach thiet bi moi nhat.
+    deviceRepository.loadFromFile();
+
+    for (const auto& thietBi : deviceRepository.getAll()) {
+        if (thietBi.getMaTram() == maTram) {
+            return true;
+        }
+    }
+
+    for (const auto& anten : antennaRepository.getAll()) {
+        if (anten.getMaTram() == maTram) {
+            return true;
+        }
+    }
+
+    for (const auto& phieu : maintenanceRepository.getAll()) {
+        if (phieu.getMaTram() == maTram) {
+            return true;
+        }
+    }
+
+    for (const auto& suCo : incidentRepository.getAll()) {
+        if (suCo.getMaTram() == maTram) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void BtsStationUseCase::deleteStation() {
     string id = readUseCaseLine("Nhap ma tram can xoa: ");
     BtsStation* tram = stationRepository.find(id);
@@ -514,12 +556,7 @@ void BtsStationUseCase::deleteStation() {
     }
     tram->display();
 
-    if (!isReferenced) {
-        cout << "Chua ket noi kiem tra tham chieu tu cac doi tuong khac; "
-             << "tam thoi khong cho xoa tram.\n";
-        return;
-    }
-    if (isReferenced(id)) {
+    if (tramDangDuocSuDung(id)) {
         cout << "Khong the xoa: tram dang duoc doi tuong khac tham chieu.\n";
         return;
     }

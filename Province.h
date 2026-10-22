@@ -4,9 +4,10 @@
 #include "Entity.h"
 #include "Repository.h"
 
-#include <functional>
 #include <iosfwd>
 #include <string>
+
+class BtsStation;
 
 // Luu thong tin mot khu vuc/tinh.
 class Province : public Entity {
@@ -47,7 +48,7 @@ public:
 class ProvinceUseCase {
 private:
     Repository<Province>& repository;
-    std::function<bool(const std::string&)> isReferenced;
+    Repository<BtsStation>& stationRepository;
 
     void addProvince();
     void showProvinces() const;
@@ -59,8 +60,7 @@ private:
 public:
     explicit ProvinceUseCase(
         Repository<Province>& repository,
-        std::function<bool(const std::string&)> isReferenced =
-            std::function<bool(const std::string&)>()
+        Repository<BtsStation>& stationRepository
     );
 
     void run();

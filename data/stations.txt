@@ -1,11 +1,10 @@
-TR001|Tram BTS thu nghiem 1|KV001|Dia diem thu nghiem 1|21.001|105.001|Hoat dong
-TR009|Tram BTS thu nghiem 9|KV001|Dia diem thu nghiem 9|21.009|105.009|Hoat dong
-TR002|Tram BTS thu nghiem 2|KV002|Dia diem thu nghiem 2|21.002|105.002|Hoat dong
-TR010|Tram BTS thu nghiem 10|KV002|Dia diem thu nghiem 10|21.01|105.01|Hoat dong
-TR003|Dassensei|KV004|nam dinh|4|4|bao tri
-TR011|tram cai nghien|KV003|nam dinh|90|180|hoat dong
-TR004|Tram BTS thu nghiem 4|KV004|Dia diem thu nghiem 4|21.004|105.004|Hoat dong
-TR005|Tram BTS thu nghiem 5|KV005|Dia diem thu nghiem 5|21.005|105.005|Hoat dong
-TR006|Tram BTS thu nghiem 6|KV006|Dia diem thu nghiem 6|21.006|105.006|Hoat dong
-TR007|Tram BTS thu nghiem 7|KV007|Dia diem thu nghiem 7|21.007|105.007|Hoat dong
-TR008|Tram BTS thu nghiem 8|KV008|Dia diem thu nghiem 8|21.008|105.008|Hoat dong
+TR001|BTS Cau Giay 01|KV001|Quan Cau Giay, Ha Noi|21.0308|105.7906|Dang hoat dong
+TR002|BTS Hoan Kiem 01|KV001|Quan Hoan Kiem, Ha Noi|21.0285|105.8542|Dang hoat dong
+TR003|BTS Do Son 01|KV002|Quan Do Son, Hai Phong|20.7104|106.7922|Dang hoat dong
+TR004|BTS Ha Long 01|KV003|Ha Long, Quang Ninh|20.9511|107.0800|Dang hoat dong
+TR005|BTS Sam Son 01|KV004|Thanh pho Sam Son, Thanh Hoa|19.7450|105.9000|Bao tri
+TR006|BTS Vinh 01|KV005|Thanh pho Vinh, Nghe An|18.6796|105.6813|Dang hoat dong
+TR007|BTS Hai Chau 01|KV006|Quan Hai Chau, Da Nang|16.0544|108.2022|Dang hoat dong
+TR008|BTS Nha Trang 01|KV007|Nha Trang, Khanh Hoa|12.2388|109.1967|Dang hoat dong
+TR009|BTS Buon Ma Thuot 01|KV008|Buon Ma Thuot, Dak Lak|12.6667|108.0500|Dang hoat dong
+TR010|BTS Thu Dau Mot 01|KV009|Thu Dau Mot, Binh Duong|10.9804|106.6519|Tam ngung

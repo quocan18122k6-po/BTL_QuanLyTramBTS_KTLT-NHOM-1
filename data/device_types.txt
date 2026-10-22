@@ -1,10 +1,10 @@
-LT001|BBU|Chuc nang thu nghiem 1|Nha san xuat mau 1
-LT002|RRU|Chuc nang thu nghiem 2|Nha san xuat mau 2
-LT003|Router|Chuc nang thu nghiem 3|Nha san xuat mau 3
-LT004|Switch|Chuc nang thu nghiem 4|Nha san xuat mau 4
-LT005|Rectifier|Chuc nang thu nghiem 5|Nha san xuat mau 5
-LT006|Battery|Chuc nang thu nghiem 6|Nha san xuat mau 6
-LT007|GPS|Chuc nang thu nghiem 7|Nha san xuat mau 7
-LT008|Cooling|Chuc nang thu nghiem 8|Nha san xuat mau 8
-LT009|Power Monitor|Chuc nang thu nghiem 9|Nha san xuat mau 9
-LT010|Transmission|Chuc nang thu nghiem 10|Nha san xuat mau 10
+LTB001|Bo thu phat RRU|Thu phat tin hieu vo tuyen|Huawei
+LTB002|Bo xu ly BBU|Xu ly tin hieu, dieu khien|Ericsson
+LTB003|Anten panel|Phat va thu song di dong|CommScope
+LTB004|Nguon DC|Cap nguon DC|Delta
+LTB005|Ac quy du phong|Luu tru dien du phong|Narada
+LTB006|Bo truyen dan|Truyen du lieu ve mang loi|Cisco
+LTB007|Cap quang|Ket noi truyen dan quang|Corning
+LTB008|Tu rack|Lap dat va bao ve thiet bi|Schneider Electric
+LTB009|Bo chong set|Bao ve khi co xung set|Phoenix Contact
+LTB010|He thong lam mat|Lam mat phong thiet bi|Daikin

@@ -1,4 +1,4 @@
-#include "antenna config.h"
+#include "AntennaConfig.h"
 #include "InputHelper.h"
 #include "Validator.h"
 #include <iostream>
@@ -286,7 +286,7 @@ void quanLyAnten(Repository<AntennaConfig>& repoAnten, Repository<BtsStation>& r
 
 		try {
 			switch (luaChon) {
-			case 1: { //Them moi anten (kiem tra trung ID truoc khi luu)
+			case 1: { //Them moi anten (kiem tra trung ID truoc khi luu) (CREATE)
 				AntennaConfig anten;
 				anten.input();
 
@@ -309,7 +309,7 @@ void quanLyAnten(Repository<AntennaConfig>& repoAnten, Repository<BtsStation>& r
 				break;
 			}
 
-			case 2: { //Hien thi danh sach anten dang bang
+			case 2: { //Hien thi danh sach anten dang bang(READ)
 				const vector<AntennaConfig>& danhSach = repoAnten.getAll();
 
 				if (danhSach.empty()) {
@@ -335,7 +335,7 @@ void quanLyAnten(Repository<AntennaConfig>& repoAnten, Repository<BtsStation>& r
 				break;
 			}
 
-			case 3: { //Tim kiem va xem chi tiet anten theo ma
+			case 3: { //Tim kiem va xem chi tiet anten theo ma(READ)
 				string ma = InputHelper::getString(
 					"Nhap ma anten can tim: "
 				);
@@ -352,7 +352,7 @@ void quanLyAnten(Repository<AntennaConfig>& repoAnten, Repository<BtsStation>& r
 				break;
 			}
 
-			case 4: { //Cap nhat thong tin qua ban sao tam de dam bao an toan du lieu
+			case 4: { //Cap nhat thong tin qua ban sao tam de dam bao an toan du lieu(UPDATE)
 				string ma = InputHelper::getString("Nhap ma anten can sua: ");
 
 				const AntennaConfig* anten = repoAnten.find(ma);
@@ -380,7 +380,7 @@ void quanLyAnten(Repository<AntennaConfig>& repoAnten, Repository<BtsStation>& r
 				break;
 			}
 
-			case 5: { //Xoa anten khoi kho luu tru (co xac nhan y/n)
+			case 5: { //Xoa anten khoi kho luu tru (co xac nhan y/n) (DELETE)
 				string ma = InputHelper::getString(
 					"Nhap ma anten can xoa: "
 				);

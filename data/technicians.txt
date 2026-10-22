@@ -1,10 +1,10 @@
-KTV001|Nguyen Van An|0900000001|Chung chi BTS|Doi ky thuat 1
-KTV002|Tran Thi Binh|0900000002|Chung chi BTS|Doi ky thuat 2
-KTV003|Le Van Cuong|0900000003|Chung chi BTS|Doi ky thuat 3
-KTV004|Pham Thi Dung|0900000004|Chung chi BTS|Doi ky thuat 4
-KTV005|Hoang Van Duy|0900000005|Chung chi BTS|Doi ky thuat 5
-KTV006|Vu Thi Ha|0900000006|Chung chi BTS|Doi ky thuat 6
-KTV007|Do Van Hung|0900000007|Chung chi BTS|Doi ky thuat 7
-KTV008|Bui Thi Lan|0900000008|Chung chi BTS|Doi ky thuat 8
-KTV009|Ngo Van Minh|0900000009|Chung chi BTS|Doi ky thuat 9
-KTV010|Dang Thi Nga|0900000010|Chung chi BTS|Doi ky thuat 10
+KTV001|Nguyen Van An|0900000001|BTS|Doi 1
+KTV002|Tran Thi Binh|0900000002|RF|Doi 1
+KTV003|Le Van Cuong|0900000003|Truyen dan|Doi 2
+KTV004|Pham Thi Dung|0900000004|Nguon dien|Doi 2
+KTV005|Hoang Van Giang|0900000005|An toan dien|Doi 3
+KTV006|Vu Thi Hoa|0900000006|BTS|Doi 3
+KTV007|Do Quang Huy|0900000007|RF|Doi 4
+KTV008|Bui Thi Lan|0900000008|Truyen dan|Doi 4
+KTV009|Dang Van Minh|0900000009|Nguon dien|Doi 5
+KTV010|Ngo Thi Nga|0900000010|BTS|Doi 5

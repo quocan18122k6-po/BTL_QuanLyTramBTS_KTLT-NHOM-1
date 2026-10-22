@@ -2,7 +2,6 @@
 #include "InputHelper.h"
 
 #include <exception>
-#include <iomanip>
 #include <iostream>
 #include <string>
 
@@ -10,32 +9,6 @@ namespace {
     // Thu muc data nam trong thu muc chay chuong trinh.
     std::string duongDanData(const std::string& tenFile) {
         return "data/" + tenFile;
-    }
-    void thongBaoKetQua(bool thanhCong) {
-        if (thanhCong) {
-            std::cout << "Thanh cong! Du lieu da duoc luu.\n";
-        }
-        else {
-            std::cout
-                << "Thao tac that bai. Kiem tra ma va kha nang ghi file.\n";
-        }
-    }
-
-    bool xacNhanXoa() {
-        while (true) {
-            std::string traLoi =
-                InputHelper::getString("Xac nhan xoa (y/n): ");
-
-            if (traLoi == "y" || traLoi == "Y") {
-                return true;
-            }
-
-            if (traLoi == "n" || traLoi == "N") {
-                return false;
-            }
-
-            std::cout << "Chi nhap y hoac n.\n";
-        }
     }
 }
 
@@ -50,7 +23,7 @@ Application::Application()
     repoSuCo(duongDanData("incidents.txt")) {
 }
 
-// ==================== MENU CHINH ====================
+//MENU CHINH
 
 void Application::menu() {
     std::cout
@@ -70,8 +43,7 @@ void Application::run() {
         try {
             menu();
 
-            int luaChon =
-                InputHelper::getInt("Nhap lua chon: ", 0, 4);
+            int luaChon = InputHelper::getInt("Nhap lua chon: ", 0, 4);
 
             switch (luaChon) {
             case 1:
@@ -106,7 +78,7 @@ void Application::run() {
     }
 }
 
-// ==================== KHU VUC & TRAM ====================
+// KHU VUC & TRAM
 
 void Application::tramVaKhuVuc() {
     while (std::cin) {
@@ -116,23 +88,18 @@ void Application::tramVaKhuVuc() {
             << "  2. Quan ly tram BTS\n"
             << "  0. Quay lai menu chinh\n";
 
-        int luaChon =
-            InputHelper::getInt("Nhap lua chon: ", 0, 2);
+        int luaChon =InputHelper::getInt("Nhap lua chon: ", 0, 2);
 
         switch (luaChon) {
-        case 1:
-            quanLyKhuVuc();
+        case 1: {
+            ProvinceUseCase quanLyTinh(repoTinh, repoTram);//tham chieu voi ma tram
+
+            quanLyTinh.run();
             break;
+        }
 
         case 2: {
-            BtsStationUseCase quanLyTram(
-                repoTram,
-                repoTinh,
-                [this](const std::string& maTram) {
-                    return tramDangDuocSuDung(maTram);
-                }
-            );
-
+            BtsStationUseCase quanLyTram(repoTram, repoTinh, repoThietBi,repoAnten, repoBaoTri, repoSuCo); //lam tham chieu cho cac usecase
             quanLyTram.run();
             break;
         }
@@ -143,197 +110,7 @@ void Application::tramVaKhuVuc() {
     }
 }
 
-bool Application::tinhDangDuocSuDung(
-    const std::string& maTinh
-) const {
-    for (const auto& tram : repoTram.getAll()) {
-        if (tram.getMaKhuVuc() == maTinh) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-bool Application::tramDangDuocSuDung(
-    const std::string& maTram
-) {
-    // InstalledDeviceManager hien giu Repository rieng.
-    // Nap lai de kiem tra danh sach thiet bi moi nhat.
-    repoThietBi.loadFromFile();
-
-    for (const auto& thietBi : repoThietBi.getAll()) {
-        if (thietBi.getMaTram() == maTram) {
-            return true;
-        }
-    }
-
-    for (const auto& anten : repoAnten.getAll()) {
-        if (anten.getMaTram() == maTram) {
-            return true;
-        }
-    }
-
-    for (const auto& phieu : repoBaoTri.getAll()) {
-        if (phieu.getMaTram() == maTram) {
-            return true;
-        }
-    }
-
-    for (const auto& suCo : repoSuCo.getAll()) {
-        if (suCo.getMaTram() == maTram) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-void Application::quanLyKhuVuc() {
-    while (std::cin) {
-        try {
-            std::cout
-                << "\n========== QUAN LY KHU VUC/TINH ==========\n"
-                << "  1. Them moi\n"
-                << "  2. Xem danh sach\n"
-                << "  3. Tim theo ma / xem chi tiet\n"
-                << "  4. Cap nhat\n"
-                << "  5. Xoa\n"
-                << "  0. Quay lai\n";
-
-            int luaChon =
-                InputHelper::getInt("Nhap lua chon: ", 0, 5);
-
-            if (luaChon == 0) {
-                return;
-            }
-
-            if (luaChon == 1) {
-                Province tinhMoi;
-                tinhMoi.input();
-
-                if (repoTinh.exists(tinhMoi.getId())) {
-                    std::cout << "Ma khu vuc/tinh da ton tai.\n";
-                }
-                else {
-                    thongBaoKetQua(repoTinh.add(tinhMoi));
-                }
-
-                continue;
-            }
-
-            if (luaChon == 2) {
-                const auto& danhSach = repoTinh.getAll();
-
-                if (danhSach.empty()) {
-                    std::cout << "Chua co du lieu khu vuc/tinh.\n";
-                    continue;
-                }
-
-                // Do rong cot tu tang theo noi dung.
-                std::size_t rongMa = 10;
-                std::size_t rongTen = 20;
-                std::size_t rongDiaHinh = 20;
-                std::size_t rongDonVi = 20;
-
-                for (const auto& tinh : danhSach) {
-                    if (tinh.getId().size() > rongMa)
-                        rongMa = tinh.getId().size();
-
-                    if (tinh.getTenTinh().size() > rongTen)
-                        rongTen = tinh.getTenTinh().size();
-
-                    if (tinh.getDiaHinh().size() > rongDiaHinh)
-                        rongDiaHinh = tinh.getDiaHinh().size();
-
-                    if (tinh.getDonViQuanLy().size() > rongDonVi)
-                        rongDonVi = tinh.getDonViQuanLy().size();
-                }
-
-                std::cout << std::left
-                    << std::setw(static_cast<int>(rongMa))
-                    << "Ma tinh" << " | "
-                    << std::setw(static_cast<int>(rongTen))
-                    << "Ten tinh" << " | "
-                    << std::setw(static_cast<int>(rongDiaHinh))
-                    << "Dia hinh" << " | "
-                    << std::setw(static_cast<int>(rongDonVi))
-                    << "Don vi quan ly" << '\n';
-
-                for (const auto& tinh : danhSach) {
-                    std::cout
-                        << std::setw(static_cast<int>(rongMa))
-                        << tinh.getId() << " | "
-                        << std::setw(static_cast<int>(rongTen))
-                        << tinh.getTenTinh() << " | "
-                        << std::setw(static_cast<int>(rongDiaHinh))
-                        << tinh.getDiaHinh() << " | "
-                        << std::setw(static_cast<int>(rongDonVi))
-                        << tinh.getDonViQuanLy() << '\n';
-                }
-
-                std::cout << "Tong so: " << danhSach.size() << '\n';
-                continue;
-            }
-
-            std::string ma =
-                InputHelper::getString("Nhap ma khu vuc/tinh: ");
-
-            Province* tinh = repoTinh.find(ma);
-
-            if (tinh == nullptr) {
-                std::cout << "Khong tim thay khu vuc/tinh.\n";
-                continue;
-            }
-
-            tinh->display();
-
-            switch (luaChon) {
-            case 3:
-                // Da hien thi chi tiet o tren.
-                break;
-
-            case 4: {
-                // Sua ban sao, chi cap nhat kho khi hop le.
-                Province banSao = *tinh;
-                banSao.updateInfo();
-
-                if (banSao.getId() != ma) {
-                    std::cout << "Khong duoc thay doi ma.\n";
-                    break;
-                }
-
-                thongBaoKetQua(repoTinh.update(ma, banSao));
-                break;
-            }
-
-            case 5:
-                if (tinhDangDuocSuDung(ma)) {
-                    std::cout
-                        << "Khong the xoa: khu vuc/tinh dang co tram BTS.\n";
-                    break;
-                }
-
-                if (xacNhanXoa()) {
-                    thongBaoKetQua(repoTinh.remove(ma));
-                }
-                else {
-                    std::cout << "Da huy thao tac xoa.\n";
-                }
-                break;
-            }
-        }
-        catch (const std::exception& e) {
-            if (!std::cin) {
-                throw;
-            }
-
-            std::cout << "[LOI]: " << e.what() << '\n';
-        }
-    }
-}
-
-// ==================== THIET BI ====================
+// THIET BI
 
 void Application::thietBi() {
     while (std::cin) {
@@ -343,8 +120,7 @@ void Application::thietBi() {
             << "  2. Quan ly thiet bi lap dat\n"
             << "  0. Quay lai menu chinh\n";
 
-        int luaChon =
-            InputHelper::getInt("Nhap lua chon: ", 0, 2);
+        int luaChon =InputHelper::getInt("Nhap lua chon: ", 0, 2);
 
         switch (luaChon) {
         case 1: {
@@ -359,13 +135,8 @@ void Application::thietBi() {
         case 2: {
             repoLoai.loadFromFile();
 
-            InstalledDeviceManager quanLyThietBi(
-                repoLoai,
-                repoTram
-            );
-
+            InstalledDeviceManager quanLyThietBi( repoLoai,repoTram); // tham chieu voi ma tram
             quanLyThietBi.chayChuongTrinh();
-
             // Cap nhat du lieu dung de kiem tra xoa tram.
             repoThietBi.loadFromFile();
             break;
@@ -377,7 +148,7 @@ void Application::thietBi() {
     }
 }
 
-// ==================== KY THUAT VIEN & BAO TRI ====================
+// KY THUAT VIEN & BAO TRI
 
 void Application::baoTri() {
     while (std::cin) {
@@ -387,8 +158,7 @@ void Application::baoTri() {
             << "  2. Quan ly phieu bao tri\n"
             << "  0. Quay lai menu chinh\n";
 
-        int luaChon =
-            InputHelper::getInt("Nhap lua chon: ", 0, 2);
+        int luaChon =InputHelper::getInt("Nhap lua chon: ", 0, 2);
 
         switch (luaChon) {
         case 1:
@@ -397,11 +167,7 @@ void Application::baoTri() {
             break;
 
         case 2:
-            quanLyMaintenanceTicket(
-                repoBaoTri,
-                repoTram,
-                repoKTV
-            );
+            quanLyMaintenanceTicket(repoBaoTri,repoTram,repoKTV); // truyen tham chieu voi ma tram và KTV
             break;
 
         case 0:
@@ -410,7 +176,7 @@ void Application::baoTri() {
     }
 }
 
-// ==================== ANTEN & SU CO ====================
+// ANTEN & SU CO
 
 void Application::suCoVaAnten() {
     while (std::cin) {
@@ -420,16 +186,14 @@ void Application::suCoVaAnten() {
             << "  2. Quan ly nhat ky su co\n"
             << "  0. Quay lai menu chinh\n";
 
-        int luaChon =
-            InputHelper::getInt("Nhap lua chon: ", 0, 2);
+        int luaChon =InputHelper::getInt("Nhap lua chon: ", 0, 2);
 
         switch (luaChon) {
         case 1:
-            quanLyAnten(repoAnten, repoTram);
+            quanLyAnten(repoAnten, repoTram); // tham chieu voi ma tram
             break;
-
         case 2:
-            quanLySuCo(repoSuCo, repoTram);
+            quanLySuCo(repoSuCo, repoTram); // tham chieu voi ma tram
             break;
 
         case 0:

@@ -1,3 +1,4 @@
+#include "BtsStation.h"
 #include "Province.h"
 #include "InputHelper.h"
 #include "Validator.h"
@@ -287,8 +288,8 @@ void header() {
 
 ProvinceUseCase::ProvinceUseCase(
     Repository<Province>& repository,
-    function<bool(const string&)> isReferenced
-) : repository(repository), isReferenced(isReferenced) {}
+    Repository<BtsStation>& stationRepository
+) : repository(repository), stationRepository(stationRepository) {}
 
 void ProvinceUseCase::run() {
     while (true) {
@@ -384,13 +385,11 @@ void ProvinceUseCase::deleteProvince() {
     if (!p) { cout << "Khong tim thay ma khu vuc.\n"; return; }
     p->display();
 
-    if (!isReferenced) {
-        cout << "Chua ket noi kiem tra tham chieu TramBTS; tam thoi khong cho xoa.\n";
-        return;
-    }
-    if (isReferenced(id)) {
-        cout << "Khong the xoa: khu vuc dang duoc tram BTS tham chieu.\n";
-        return;
+    for (const auto& tram : stationRepository.getAll()) {
+        if (tram.getMaKhuVuc() == id) {
+            cout << "Khong the xoa: khu vuc dang duoc tram BTS tham chieu.\n";
+            return;
+        }
     }
 
     string confirm = readUseCaseLine("Xac nhan xoa (y/n): ");
