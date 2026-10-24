@@ -1,10 +1,10 @@
 SC001|TR001|Mat nguon|Cao|01/09/2026|02/09/2026
-SC002|TR002|Suy hao tin hieu|Trung binh|03/09/2026|03/09/2026
+SC002|TR002|Suy hao|Trung binh|03/09/2026|03/09/2026
 SC003|TR003|Loi truyen dan|Cao|05/09/2026|06/09/2026
 SC004|TR004|Nhiet do cao|Trung binh|07/09/2026|07/09/2026
 SC005|TR005|Ac quy yeu|Cao|09/09/2026|10/09/2026
 SC006|TR006|Canh bao RRU|Cao|11/09/2026|11/09/2026
-SC007|TR007|Loi ket noi quang|Cao|13/09/2026|14/09/2026
+SC007|TR007|Loi ket noi|Cao|13/09/2026|14/09/2026
 SC008|TR008|Suy hao anten|Trung binh|15/09/2026|15/09/2026
-SC009|TR009|Mat ket noi giam sat|Trung binh|17/09/2026|18/09/2026
+SC009|TR009|Mat ket noi|Trung binh|17/09/2026|18/09/2026
 SC010|TR010|He thong lam mat loi|Cao|19/09/2026|20/09/2026
